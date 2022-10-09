@@ -1,6 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/user_nav">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/user_nav"
+    app:startDestination="@id/inspectFragment">
 
+    <fragment
+        android:id="@+id/inspectFragment"
+        android:name="com.capstone.frontapp.InspectFragment"
+        android:label="fragment_inspect"
+        tools:layout="@layout/fragment_inspect" >
+        <action
+            android:id="@+id/action_inspectFragment_to_userResultListFragment"
+            app:destination="@id/userResultListFragment" />
+        <action
+            android:id="@+id/action_inspectFragment_to_userCallFragment"
+            app:destination="@id/userCallFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userResultListFragment"
+        android:name="com.capstone.frontapp.UserResultListFragment"
+        android:label="fragment_user_result_list"
+        tools:layout="@layout/fragment_user_result_list" >
+        <action
+            android:id="@+id/action_userResultListFragment_to_inspectFragment"
+            app:destination="@id/inspectFragment" />
+        <action
+            android:id="@+id/action_userResultListFragment_to_userCallFragment"
+            app:destination="@id/userCallFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userCallFragment"
+        android:name="com.capstone.frontapp.UserCallFragment"
+        android:label="fragment_user_call"
+        tools:layout="@layout/fragment_user_call" >
+        <action
+            android:id="@+id/action_userCallFragment_to_inspectFragment"
+            app:destination="@id/inspectFragment" />
+        <action
+            android:id="@+id/action_userCallFragment_to_userResultListFragment"
+            app:destination="@id/userResultListFragment" />
+    </fragment>
 </navigation>
