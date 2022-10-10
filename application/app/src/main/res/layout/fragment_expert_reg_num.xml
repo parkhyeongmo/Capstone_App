@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".UserCallFragment">
+    tools:context=".ExpertRegNumFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -41,11 +40,13 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="통화 연결"
-
-        android:gravity="center"/>
+        android:text="관리자 번호 등록"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
 
     <LinearLayout
@@ -55,29 +56,29 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/btn_inspect"
+            android:id="@+id/btn_expert_list"
             android:layout_width="100dp"
             android:layout_height="80dp"
             android:background="@color/black"
 
-            android:text="inspect"
+            android:text="List"
             android:textColor="@color/white"
             android:scaleType="fitXY"
             android:layout_weight="1"/>
 
         <Button
-            android:id="@+id/btn_list"
+            android:id="@+id/btn_stock"
             android:layout_width="100dp"
             android:layout_height="80dp"
             android:background="@color/black"
 
-            android:text="list"
+            android:text="Stock"
             android:textColor="@color/white"
             android:scaleType="fitXY"
             android:layout_weight="1"/>
 
         <Button
-            android:id="@+id/btn_call"
+            android:id="@+id/btn_reg_num"
             android:layout_width="100dp"
             android:layout_height="80dp"
             android:background="@color/black"

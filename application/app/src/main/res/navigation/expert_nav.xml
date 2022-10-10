@@ -1,6 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/expert_nav">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/expert_nav"
+    app:startDestination="@id/expertListFragment">
 
+    <fragment
+        android:id="@+id/expertListFragment"
+        android:name="com.capstone.frontapp.ExpertListFragment"
+        android:label="fragment_expert_list"
+        tools:layout="@layout/fragment_expert_list" >
+        <action
+            android:id="@+id/action_expertListFragment_to_expertRegNumFragment"
+            app:destination="@id/expertRegNumFragment" />
+        <action
+            android:id="@+id/action_expertListFragment_to_expertStockFragment"
+            app:destination="@id/expertStockFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/expertRegNumFragment"
+        android:name="com.capstone.frontapp.ExpertRegNumFragment"
+        android:label="fragment_expert_reg_num"
+        tools:layout="@layout/fragment_expert_reg_num" >
+        <action
+            android:id="@+id/action_expertRegNumFragment_to_expertListFragment"
+            app:destination="@id/expertListFragment" />
+        <action
+            android:id="@+id/action_expertRegNumFragment_to_expertStockFragment"
+            app:destination="@id/expertStockFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/expertStockFragment"
+        android:name="com.capstone.frontapp.ExpertStockFragment"
+        android:label="fragment_expert_stock"
+        tools:layout="@layout/fragment_expert_stock" >
+        <action
+            android:id="@+id/action_expertStockFragment_to_expertRegNumFragment"
+            app:destination="@id/expertRegNumFragment" />
+        <action
+            android:id="@+id/action_expertStockFragment_to_expertListFragment"
+            app:destination="@id/expertListFragment" />
+    </fragment>
 </navigation>
