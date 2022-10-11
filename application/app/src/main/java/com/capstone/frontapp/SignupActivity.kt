@@ -11,7 +11,7 @@ class SignupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
-        val phone_num = findViewById<EditText>(R.id.phone_num)
+        val phone_num = findViewById<EditText>(R.id.edit_phone_num)
         phone_num.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
 

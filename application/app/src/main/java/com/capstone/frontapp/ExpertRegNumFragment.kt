@@ -2,11 +2,13 @@ package com.capstone.frontapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import androidx.navigation.findNavController
 
 class ExpertRegNumFragment : Fragment() {
@@ -27,6 +29,8 @@ class ExpertRegNumFragment : Fragment() {
             startActivity(intent)
 
         }
+
+        view.findViewById<EditText>(R.id.edit_expert_tel).addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
 
         view.findViewById<Button>(R.id.btn_expert_list).setOnClickListener {

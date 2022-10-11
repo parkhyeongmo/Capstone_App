@@ -64,7 +64,7 @@
         android:textSize="20sp"/>
 
     <EditText
-        android:id="@+id/emp_num"
+        android:id="@+id/edit_emp_num"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="사원번호를 입력하세요."
@@ -86,13 +86,12 @@
         android:textSize="20sp"/>
 
     <EditText
-        android:id="@+id/phone_num"
+        android:id="@+id/edit_phone_num"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="전화번호를 입력하세요."
         android:inputType="phone"
-        android:maxLength="13"
-        />
+        android:maxLength="13"/>
 
     </LinearLayout>
 
