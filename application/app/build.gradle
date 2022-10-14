@@ -39,6 +39,10 @@ dependencies {
     implementation "com.kakao.sdk:v2-talk:2.11.2" // 친구, 메시지(카카오톡)
     implementation "com.kakao.sdk:v2-share:2.11.2" // 메시지(카카오톡 공유)
 
+    // retrifit2 서버 통신 모듈 설정
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.8.2'
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.6.1'

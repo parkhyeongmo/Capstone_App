@@ -11,6 +11,7 @@ class SignupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
+        // 전화번호 입력 폼 양식 설정
         val phone_num = findViewById<EditText>(R.id.edit_phone_num)
         phone_num.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 

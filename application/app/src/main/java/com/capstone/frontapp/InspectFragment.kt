@@ -24,18 +24,17 @@ class InspectFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_inspect, container, false)
 
+        // 계정 관리 화면 이동
         view.findViewById<Button>(R.id.btn_account).setOnClickListener {
-
             val intent = Intent(context, AccountActivity::class.java)
             startActivity(intent)
-
         }
 
-
+        // 사용자 검사 내역 화면 이동
         view.findViewById<Button>(R.id.btn_list).setOnClickListener {
             it.findNavController().navigate(R.id.action_inspectFragment_to_userResultListFragment)
         }
-
+        // 통화 연결 화면 이동
         view.findViewById<Button>(R.id.btn_call).setOnClickListener {
             it.findNavController().navigate(R.id.action_inspectFragment_to_userCallFragment)
         }

@@ -21,17 +21,18 @@ class ExpertStockFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_expert_stock, container, false)
 
+        // 계정 관리 화면 이동
         view.findViewById<Button>(R.id.btn_account).setOnClickListener {
             val intent = Intent(context, AccountActivity::class.java)
             startActivity(intent)
         }
 
 
-
+        // 관리자 검사 내역 화면 이동
         view.findViewById<Button>(R.id.btn_expert_list).setOnClickListener {
             it.findNavController().navigate(R.id.action_expertStockFragment_to_expertListFragment)
         }
-
+        // 관리자 번호 등록 화면 이동
         view.findViewById<Button>(R.id.btn_reg_num).setOnClickListener {
             it.findNavController().navigate(R.id.action_expertStockFragment_to_expertRegNumFragment)
         }
