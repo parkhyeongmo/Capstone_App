@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
                 }
 
-                val intent = Intent(this, ExpertActivity::class.java)
+                val intent = Intent(this, UserActivity::class.java)
                 startActivity(intent)
                 finish()
             }

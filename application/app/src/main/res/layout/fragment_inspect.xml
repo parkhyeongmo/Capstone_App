@@ -8,84 +8,105 @@
     tools:context=".InspectFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="right">
+        android:gravity="right"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/user_name"
-            android:text="사용자명"
-            android:textSize="25dp"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
             android:layout_marginStart="20dp"
+            android:text="사용자명"
+
+            android:textSize="25dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btn_account"
-            android:text="계정"
-            android:background="@color/black"
-            android:textColor="@color/white"
-
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:background="@color/black"
+
+            android:text="계정"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="검사화면"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
 
-        android:gravity="center"/>
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+
+        <ImageView
+            android:id="@+id/image_upload"
+            android:src="@drawable/sampleimage"
+
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_margin="50dp"
+            android:scaleType="centerCrop"/>
+
+        <Button
+            android:id="@+id/btn_req_inspect"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:text="검사하기"/>
+
+    </LinearLayout>
 
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:gravity="center">
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
             android:id="@+id/btn_inspect"
             android:layout_width="100dp"
             android:layout_height="80dp"
-            android:background="@color/black"
+            android:layout_weight="1"
 
-            android:text="inspect"
-            android:textColor="@color/white"
+            android:background="@color/black"
             android:scaleType="fitXY"
-            android:layout_weight="1"/>
+            android:text="inspect"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_list"
             android:layout_width="100dp"
             android:layout_height="80dp"
-            android:background="@color/black"
+            android:layout_weight="1"
 
-            android:text="list"
-            android:textColor="@color/white"
+            android:background="@color/black"
             android:scaleType="fitXY"
-            android:layout_weight="1"/>
+            android:text="list"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_call"
             android:layout_width="100dp"
             android:layout_height="80dp"
-            android:background="@color/black"
+            android:layout_weight="1"
 
-            android:text="call"
-            android:textColor="@color/white"
+            android:background="@color/black"
             android:scaleType="fitXY"
-            android:layout_weight="1"/>
+            android:text="call"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
