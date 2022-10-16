@@ -1,5 +1,6 @@
 package com.capstone.frontapp
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,12 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
+import java.util.jar.Manifest
 
 
 class InspectFragment : Fragment() {
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +34,11 @@ class InspectFragment : Fragment() {
             startActivity(intent)
         }
 
+        view.findViewById<ImageView>(R.id.image_upload).setOnClickListener {
+
+
+        }
+
         // 사용자 검사 내역 화면 이동
         view.findViewById<Button>(R.id.btn_list).setOnClickListener {
             it.findNavController().navigate(R.id.action_inspectFragment_to_userResultListFragment)
@@ -41,6 +50,5 @@ class InspectFragment : Fragment() {
 
         return view
     }
-
 
 }
