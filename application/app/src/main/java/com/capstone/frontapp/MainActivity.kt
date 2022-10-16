@@ -13,6 +13,11 @@ import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.user.UserApi
 import com.kakao.sdk.user.UserApiClient
 import com.kakao.sdk.common.util.Utility
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,8 +25,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val btn_kakao_login = findViewById<ImageButton>(R.id.btn_kakao_login)
+        // Node.js 서버 통신 설정
+        val url = "http://a592-115-91-214-3.ngrok.io"
+        val retrofit = Retrofit.Builder()
+            .baseUrl(url)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        var server = retrofit.create(APIInterface::class.java)
 
+        // 카카오 로그인
+        val btn_kakao_login = findViewById<ImageButton>(R.id.btn_kakao_login)
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
                 Log.e("TAG", "카카오계정으로 로그인 실패", error)
@@ -51,6 +64,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // 카카오 로그인 버튼 이벤트
         btn_kakao_login.setOnClickListener{
 
             UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)

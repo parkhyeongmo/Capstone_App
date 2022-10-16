@@ -21,15 +21,16 @@ class UserResultListFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_user_result_list, container, false)
 
+        // 계정 관리 화면 이동
         view.findViewById<Button>(R.id.btn_account).setOnClickListener {
             val intent = Intent(context, AccountActivity::class.java)
             startActivity(intent)
         }
-
+        // 부품 검사 화면 이동
         view.findViewById<Button>(R.id.btn_inspect).setOnClickListener {
             it.findNavController().navigate(R.id.action_userResultListFragment_to_inspectFragment)
         }
-
+        // 통화 연결 화면 이동
         view.findViewById<Button>(R.id.btn_call).setOnClickListener {
             it.findNavController().navigate(R.id.action_userResultListFragment_to_userCallFragment)
         }
