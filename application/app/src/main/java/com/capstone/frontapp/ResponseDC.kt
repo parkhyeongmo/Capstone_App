@@ -3,22 +3,37 @@ package com.capstone.frontapp
 import retrofit2.Call
 import retrofit2.http.*
 
-data class ResponseDC(var result:String? = null)
+data class loginResponse(
+    val id:String,
+    val name:String,
+    val type:Boolean
+)
 
 interface APIInterface {
-    @GET("/")
-    fun getRequest(@Query("name") name: String): Call<ResponseDC>
 
-    @FormUrlEncoded
-    @POST("/")
-    fun postRequest(@Field("id")id: String,
-                    @Field("password")password: String):Call<ResponseDC>
+    // 로그인
+    @POST("/auth/login")
+    fun logIn(
+        @Header("authorization") accessToken:String
+    ): Call<loginResponse>
 
-    @FormUrlEncoded
-    @PUT("/{id}")
-    fun putRequest(@Path("id")id: String,
-                   @Field("content")content: String): Call<ResponseDC>
+    // 회원가입
+    @POST("/auth/sign-up")
+    fun signUp(
+        @Header("authorization") token: String,
+        @Body type: Boolean,
+        @Body empnum: Int,
+        @Body hp: String
+    ): Call<loginResponse>
 
-    @DELETE("/{id}")
-    fun deleteRequest(@Path("id")id: String): Call<ResponseDC>
+    // 로그아웃
+    @GET("/member/logout")
+    fun logOut(
+    )
+
+    // 회원탈퇴
+    @POST("/member/leave")
+    fun unLink(
+    )
+
 }

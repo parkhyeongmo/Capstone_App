@@ -24,8 +24,6 @@ import androidx.navigation.fragment.findNavController
 import java.net.URI
 import java.util.jar.Manifest
 
-private const val PICK_FROM_ALBUM = 0
-
 class InspectFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +49,7 @@ class InspectFragment : Fragment() {
         }
 
         // 카메라 사진 촬영 버튼
-        view.findViewById<Button>(R.id.btn_shoot).setOnClickListener {
+        view.findViewById<Button>(R.id.btn_shot).setOnClickListener {
             (activity as UserActivity).shootPhoto()
         }
 
