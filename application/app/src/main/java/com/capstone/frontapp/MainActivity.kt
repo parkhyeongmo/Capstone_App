@@ -15,17 +15,26 @@ import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApi
 import com.kakao.sdk.user.UserApiClient
 import com.kakao.sdk.common.util.Utility
+import com.kakao.sdk.user.model.User
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
 // Node.js 서버 통신 설정 싱글톤 패턴으로 생성
 object RetrofitClass {
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://a592-115-91-214-3.ngrok.io")
+        .baseUrl("http://ac07-125-129-58-224.ngrok.io")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
     val api = retrofit.create(APIInterface::class.java)
+}
+
+object UserInfo {
+
+    var id : String? = null
+    var name : String? = null
+    var type : Int? = null
+
 }
 
 class MainActivity : AppCompatActivity() {
@@ -33,18 +42,54 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val userIntent = Intent(this, UserActivity::class.java)
+        val ExpertIntent = Intent(this, ExpertActivity::class.java)
+        val SignUpIntent = Intent(this, SignupActivity::class.java)
 
         // 카카오 로그인
         val btn_kakao_login = findViewById<ImageButton>(R.id.btn_kakao_login)
+
+
 
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
                 Log.e("TAG", "카카오계정으로 로그인 실패", error)
             } else if (token != null) {
                 Log.i("TAG", "카카오계정으로 로그인 성공 ${token.accessToken}")
-                val intent = Intent(this, UserActivity::class.java)
-                startActivity(intent)
-                finish()
+                RetrofitClass.api.logIn(token.accessToken)!!.enqueue(object : Callback<loginResponse>{
+                    override fun onResponse(
+                        call: Call<loginResponse>,
+                        response: Response<loginResponse>
+                    ) {
+                        if (response.isSuccessful && response.code() == 200){ // 로그인 성공
+                            Log.i("로그인", "성공")
+                            UserInfo.id = response.body()?.id
+                            UserInfo.name = response.body()?.name
+                            UserInfo.type = response.body()?.type
+                            Log.i("로그인", "${UserInfo.id} + ${UserInfo.name} + ${UserInfo.type}")
+
+                            if (UserInfo.type == 0) {
+                                startActivity(userIntent)
+                                finish()
+                            }
+
+                            else if (UserInfo.type == 1) {
+                                startActivity(ExpertIntent)
+                                finish()
+                            }
+                        }
+                        else { // 비회원인 경우 회원가입 액티비티로 진행
+                            Log.i("로그인", "비회원 계정 ${response.body()?.name}")
+                            SignUpIntent.putExtra("accessToken", token.accessToken)
+                            startActivity(SignUpIntent)
+                            //finish()
+                        }
+                    }
+                    override fun onFailure(call: Call<loginResponse>, t: Throwable) {
+                        Log.i("로그인", "실패")
+
+                    }
+                })
             }
         }
 
@@ -72,6 +117,7 @@ class MainActivity : AppCompatActivity() {
             // 카카오톡으로 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
             else {
                 UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
+
             }
         }
 
