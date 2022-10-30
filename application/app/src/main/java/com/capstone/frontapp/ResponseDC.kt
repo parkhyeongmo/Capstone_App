@@ -1,31 +1,35 @@
 package com.capstone.frontapp
 
 import com.google.gson.annotations.SerializedName
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
 // 로그인 결과 Response data class
 data class loginResponse(
-
     @SerializedName("id")
     val id:String,
     @SerializedName("name")
     val name:String,
     @SerializedName("type")
-    val type:Int
+    val type:Int,
+    @SerializedName("jwtToken")
+    val jwt: String
 )
 
-data class signUp(
-    @SerializedName("hello")
-    val code:Int? = 0
+data class result(
+    @SerializedName("result")
+    val code: String?
 )
 
 interface APIInterface {
 
-    @GET("/auth/hello")
-    fun getHello(
-        @Body hello:String
-    ): Call<signUp>
+    @Multipart
+    @POST("/inspection/upload")
+    fun test(
+        @Part filename: MultipartBody.Part?
+    ): Call<result>
 
     // 로그인
     @POST("/auth/login")
@@ -39,17 +43,13 @@ interface APIInterface {
     fun signUp(
         @Header("authorization") accessToken: String,
         @Body params: HashMap<String, Any>
-    ): Call<signUp>
-
-    // 로그아웃
-    @GET("/member/logout")
-    fun logOut(
-    )
+    ): Call<loginResponse>
 
     // 회원탈퇴
-    @POST("/member/leave")
+    @POST("/auth/leave")
     fun unLink(
-    )
+        @Header("authorization") jwtToken: String
+    ): Call<result>
 
     // 부품 품질 검사
     @POST("/test")
@@ -98,6 +98,5 @@ interface APIInterface {
     fun changeStock(
 
     )
-
 
 }

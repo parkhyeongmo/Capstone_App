@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import androidx.navigation.findNavController
 
 class ExpertRegNumFragment : Fragment() {
@@ -29,8 +30,6 @@ class ExpertRegNumFragment : Fragment() {
             startActivity(intent)
         }
 
-        // 전화번호 입력 폼 번호 양식 설정
-        view.findViewById<EditText>(R.id.edit_expert_tel).addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         // 담당자 검사 내역 화면 이동
         view.findViewById<Button>(R.id.btn_expert_list).setOnClickListener {

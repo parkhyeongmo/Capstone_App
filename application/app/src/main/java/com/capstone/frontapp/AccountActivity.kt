@@ -7,6 +7,10 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import com.kakao.sdk.user.UserApiClient
+import com.kakao.sdk.user.model.User
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import kotlin.math.log
 
 class AccountActivity : AppCompatActivity() {
@@ -18,6 +22,8 @@ class AccountActivity : AppCompatActivity() {
         var btn_logout = findViewById<Button>(R.id.btn_logout)
         btn_logout.setOnClickListener{
 
+
+            // 카카오 로그아웃
             UserApiClient.instance.logout { error ->
 
                 if(error != null){
@@ -25,7 +31,7 @@ class AccountActivity : AppCompatActivity() {
                 }
 
                 else{
-                    Log.i("로그아웃", "성공, 토큰 삭제됨")
+                    Log.i("로그아웃", "성공, token 삭제됨")
 
                     val intent = Intent(this, MainActivity::class.java)
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK) // 로그아웃 시 Stack의 이전 활동 전부 종료
@@ -38,29 +44,50 @@ class AccountActivity : AppCompatActivity() {
 
         }
 
+        val intent = Intent(this, MainActivity::class.java)
+        val successToast = Toast.makeText(this, "회원탈퇴 성공", Toast.LENGTH_SHORT)
+        val failToast = Toast.makeText(this, "회원탈퇴 fail", Toast.LENGTH_SHORT)
+
         // 카카오 회원탈퇴 버튼
         var btn_unlink = findViewById<Button>(R.id.btn_unlink)
         btn_unlink.setOnClickListener{
 
-            UserApiClient.instance.unlink { error ->
+            // 계정 회원 탈퇴
+            RetrofitClass.api.unLink(UserInfo.jwt.toString())!!.enqueue(object : Callback<result> {
 
-                if(error != null) {
-                    Log.e("탈퇴", "실패", error)
-                    Toast.makeText(this, "탈퇴 실패", Toast.LENGTH_SHORT).show()
+                override fun onResponse(call: Call<result>, response: Response<result>) {
+                    Log.i("회원탈퇴", "성공" + response.body()?.code)
+                    UserInfo.id = null
+                    UserInfo.type = null
+                    UserInfo.name = null
+                    UserInfo.jwt = null
 
+                    Log.i("회원탈퇴", "id:${UserInfo.id}, name:${UserInfo.name}, jwt:${UserInfo.jwt}")
+
+                    UserApiClient.instance.unlink { error ->
+
+                        if(error != null) {
+                            Log.e("탈퇴", "실패")
+                        }
+                        else{
+                            Log.i("탈퇴", "성공")
+                            successToast.show()
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK) // 로그아웃 시 Stack의 이전 활동 전부 종료
+                            startActivity(intent)
+                            finish()
+                        }
+
+                    }
                 }
-                else{
 
-                    Log.i("탈퇴", "성공")
-                    Toast.makeText(this, "탈퇴 성공", Toast.LENGTH_SHORT).show()
-
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-
+                override fun onFailure(call: Call<result>, t: Throwable) {
+                    Log.i("회원탈퇴", "실패" + t.message.toString())
+                    failToast.show()
                 }
 
-            }
+            })
+
+
 
         }
 

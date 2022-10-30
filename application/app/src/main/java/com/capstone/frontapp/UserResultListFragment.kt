@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.navigation.findNavController
 
 class UserResultListFragment : Fragment() {
@@ -20,6 +21,10 @@ class UserResultListFragment : Fragment() {
         // Inflate the layout for this fragment
 
         val view = inflater.inflate(R.layout.fragment_user_result_list, container, false)
+
+        // 상단바 사용자 이름 설정
+        val nameSet = view.findViewById<TextView>(R.id.user_name)
+        nameSet.text = UserInfo.name + "님"
 
         // 계정 관리 화면 이동
         view.findViewById<Button>(R.id.btn_account).setOnClickListener {

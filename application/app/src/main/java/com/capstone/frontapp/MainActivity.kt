@@ -22,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 // Node.js 서버 통신 설정 싱글톤 패턴으로 생성
 object RetrofitClass {
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://ac07-125-129-58-224.ngrok.io")
+        .baseUrl("http://861e-220-117-80-61.ngrok.io")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
@@ -34,6 +34,7 @@ object UserInfo {
     var id : String? = null
     var name : String? = null
     var type : Int? = null
+    var jwt : String? = null
 
 }
 
@@ -49,8 +50,6 @@ class MainActivity : AppCompatActivity() {
         // 카카오 로그인
         val btn_kakao_login = findViewById<ImageButton>(R.id.btn_kakao_login)
 
-
-
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {
                 Log.e("TAG", "카카오계정으로 로그인 실패", error)
@@ -62,11 +61,13 @@ class MainActivity : AppCompatActivity() {
                         response: Response<loginResponse>
                     ) {
                         if (response.isSuccessful && response.code() == 200){ // 로그인 성공
+
                             Log.i("로그인", "성공")
                             UserInfo.id = response.body()?.id
                             UserInfo.name = response.body()?.name
                             UserInfo.type = response.body()?.type
-                            Log.i("로그인", "${UserInfo.id} + ${UserInfo.name} + ${UserInfo.type}")
+                            UserInfo.jwt = response.body()?.jwt
+                            Log.i("로그인", "${UserInfo.id} + ${UserInfo.name} + ${UserInfo.type} + ${UserInfo.jwt}")
 
                             if (UserInfo.type == 0) {
                                 startActivity(userIntent)
@@ -82,7 +83,7 @@ class MainActivity : AppCompatActivity() {
                             Log.i("로그인", "비회원 계정 ${response.body()?.name}")
                             SignUpIntent.putExtra("accessToken", token.accessToken)
                             startActivity(SignUpIntent)
-                            //finish()
+                            finish()
                         }
                     }
                     override fun onFailure(call: Call<loginResponse>, t: Throwable) {

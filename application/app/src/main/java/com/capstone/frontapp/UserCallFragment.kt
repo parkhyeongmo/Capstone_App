@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.activity.findViewTreeOnBackPressedDispatcherOwner
 import androidx.navigation.findNavController
 
 class UserCallFragment : Fragment() {
@@ -23,6 +24,10 @@ class UserCallFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_user_call, container, false)
+
+        // 상단바 사용자 이름 설정
+        val nameSet = view.findViewById<TextView>(R.id.user_name)
+        nameSet.text = UserInfo.name + "님"
 
         // 통화 연결 버튼 이벤트
         view.findViewById<Button>(R.id.btn_call_req).setOnClickListener {

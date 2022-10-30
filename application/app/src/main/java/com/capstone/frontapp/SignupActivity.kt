@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.Toast
 import com.kakao.sdk.user.UserApiClient
+import com.kakao.sdk.user.model.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,6 +27,9 @@ class SignupActivity : AppCompatActivity() {
         var getData = intent.getStringExtra("accessToken")
         Log.i("겟 토큰", getData.toString())
 
+        val userIntent = Intent(this, UserActivity::class.java)
+        val expertIntent = Intent(this, ExpertActivity::class.java)
+
         // 전화번호 입력 폼 양식 설정
         val phone_num = findViewById<EditText>(R.id.edit_phone_num)
         phone_num.addTextChangedListener(PhoneNumberFormattingTextWatcher())
@@ -41,37 +45,56 @@ class SignupActivity : AppCompatActivity() {
             }
         }
 
-
+        //val nameEdit = findViewById<EditText>(R.id.edit_name)
         val empNumEdit = findViewById<EditText>(R.id.edit_emp_num)
         val phoneEdit = findViewById<EditText>(R.id.edit_phone_num)
 
         // 회원가입 버튼
         btn_signup.setOnClickListener {
+            //val name = nameEdit.text.toString()
             val tmp = empNumEdit.text.toString()
             val empNum = tmp.toInt()
             val phoneNum = phoneEdit.text.toString()
 
             var userInfo = HashMap<String, Any>()
+            //userInfo.put("name", name)
             userInfo.put("type", accountType)
             userInfo.put("empnum", empNum)
             userInfo.put("hp", phoneNum)
 
-            Log.i("버튼 터치", "${userInfo.get("type")} + ${userInfo.get("empnum")} + ${userInfo.get("hp")}")
+            Log.i("버튼 터치", "${userInfo.get("name")} + ${userInfo.get("type")} + ${userInfo.get("empnum")} + ${userInfo.get("hp")}")
 
-            RetrofitClass.api.signUp(getData.toString(), userInfo)!!.enqueue(object : Callback<signUp> {
-
-                override fun onResponse(call: Call<signUp>, response: Response<signUp>) {
+            RetrofitClass.api.signUp(getData.toString(), userInfo)!!.enqueue(object : Callback<loginResponse> {
+                override fun onResponse(call: Call<loginResponse>, response: Response<loginResponse>) {
                     if(response.isSuccessful) {
                         Log.i("회원가입", "성공")
+
+                        //UserInfo.id = response.body()?.id
+                        UserInfo.name = response.body()?.name
+                        UserInfo.type = response.body()?.type
+                        UserInfo.jwt = response.body()?.jwt
+
+                        Log.i("로그인", "${UserInfo.id} + ${UserInfo.name} + ${UserInfo.type} + ${UserInfo.jwt}")
+
+                        if (UserInfo.type == 0) {
+                            userIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            startActivity(userIntent)
+                            finish()
+                        }
+
+                        else if (UserInfo.type == 1) {
+                            expertIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            startActivity(expertIntent)
+                            finish()
+                        }
                     }
                     else {
                         Log.i("회원가입", "실패")
                     }
-
                 }
+                override fun onFailure(call: Call<loginResponse>, t: Throwable) {
+                    Log.i("회원가입", t.message.toString())
 
-                override fun onFailure(call: Call<signUp>, t: Throwable) {
-                    Log.i("회원가입", "응답 실패")
                 }
             })
 

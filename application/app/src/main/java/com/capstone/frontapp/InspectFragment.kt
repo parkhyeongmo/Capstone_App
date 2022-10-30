@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +37,9 @@ class InspectFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_inspect, container, false)
 
+        // 상단바 사용자 이름 설정
+        val nameSet = view.findViewById<TextView>(R.id.user_name)
+        nameSet.text = UserInfo.name + "님"
 
         // 계정 관리 화면 이동
         view.findViewById<Button>(R.id.btn_account).setOnClickListener {
@@ -51,6 +55,11 @@ class InspectFragment : Fragment() {
         // 카메라 사진 촬영 버튼
         view.findViewById<Button>(R.id.btn_shot).setOnClickListener {
             (activity as UserActivity).shootPhoto()
+        }
+
+        // 검사하기 버튼
+        view.findViewById<Button>(R.id.btn_summit).setOnClickListener {
+            (activity as UserActivity).uploadImg()
         }
 
         // 사용자 검사 내역 화면 이동
