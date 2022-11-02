@@ -56,7 +56,7 @@ class AccountActivity : AppCompatActivity() {
             RetrofitClass.api.unLink(UserInfo.jwt.toString())!!.enqueue(object : Callback<result> {
 
                 override fun onResponse(call: Call<result>, response: Response<result>) {
-                    Log.i("회원탈퇴", "성공" + response.body()?.code)
+                    Log.i("회원탈퇴", "성공" + response.body()?.rst)
                     UserInfo.id = null
                     UserInfo.type = null
                     UserInfo.name = null

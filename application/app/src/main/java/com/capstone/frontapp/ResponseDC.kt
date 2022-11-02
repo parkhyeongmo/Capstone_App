@@ -20,7 +20,7 @@ data class loginResponse(
 
 data class result(
     @SerializedName("result")
-    val code: String?
+    val rst: String?
 )
 
 interface APIInterface {
@@ -28,7 +28,7 @@ interface APIInterface {
     @Multipart
     @POST("/inspection/upload")
     fun test(
-        @Part filename: MultipartBody.Part?
+        @Part image: MultipartBody.Part?
     ): Call<result>
 
     // 로그인
