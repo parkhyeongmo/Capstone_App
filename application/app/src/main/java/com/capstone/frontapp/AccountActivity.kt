@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import com.kakao.sdk.user.UserApiClient
 import com.kakao.sdk.user.model.User
@@ -18,8 +19,12 @@ class AccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
 
+        // 상단바 사용자 이름 설정
+        val nameSet = findViewById<TextView>(R.id.user_name)
+        nameSet.text = UserInfo.name + "님"
+
         // 카카오 로그아웃 버튼
-        var btn_logout = findViewById<Button>(R.id.btn_logout)
+        val btn_logout = findViewById<Button>(R.id.btn_logout)
         btn_logout.setOnClickListener{
 
 
@@ -86,8 +91,6 @@ class AccountActivity : AppCompatActivity() {
                 }
 
             })
-
-
 
         }
 

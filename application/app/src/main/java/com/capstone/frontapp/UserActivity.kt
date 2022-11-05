@@ -48,7 +48,6 @@ class BitmapRequestBody(private val bitmap: Bitmap) : RequestBody() {
     }
 }
 
-
 class UserActivity : AppCompatActivity() {
 
     private var selectedUri : Uri? = null
@@ -185,7 +184,6 @@ class UserActivity : AppCompatActivity() {
                 else {
                     Toast.makeText(this, "사진 로드 실패", Toast.LENGTH_SHORT).show()
                 }
-
             }
             // 카메라 사진 촬영 시
             3000 -> {

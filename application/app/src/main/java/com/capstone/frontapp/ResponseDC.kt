@@ -23,6 +23,20 @@ data class result(
     val rst: String?
 )
 
+data class returnPartsList(
+    @SerializedName("result")
+    val partsList: List<part>
+)
+
+data class part(
+    @SerializedName("part_id")
+    val part_id:Int,
+    @SerializedName("name")
+    val part_name:String,
+    @SerializedName("stock")
+    val stock:Int
+)
+
 interface APIInterface {
 
     @Multipart
@@ -50,6 +64,12 @@ interface APIInterface {
     fun unLink(
         @Header("authorization") jwtToken: String
     ): Call<result>
+
+    // 부품 목록 호출
+    @GET("inspection/part/list")
+    fun getParts(
+
+    ): Call<returnPartsList>
 
     // 부품 품질 검사
     @POST("/test")

@@ -21,8 +21,11 @@ class ExpertRegNumFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-
         val view = inflater.inflate(R.layout.fragment_expert_reg_num, container, false)
+
+        // 상단바 사용자 이름 설정
+        val nameSet = view.findViewById<TextView>(R.id.user_name)
+        nameSet.text = UserInfo.name + "님"
 
         // 계정 관리 화면 이동 버튼
         view.findViewById<Button>(R.id.btn_account).setOnClickListener {

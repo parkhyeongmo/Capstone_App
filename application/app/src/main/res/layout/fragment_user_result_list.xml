@@ -16,7 +16,7 @@
         <TextView
             android:id="@+id/user_name"
             android:text="사용자명"
-            android:textSize="25dp"
+            android:textSize="20sp"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

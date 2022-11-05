@@ -22,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 // Node.js 서버 통신 설정 싱글톤 패턴으로 생성
 object RetrofitClass {
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://72d4-115-91-214-3.ngrok.io")
+        .baseUrl("http://0c0b-220-117-80-61.ngrok.io")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
@@ -55,8 +55,11 @@ class MainActivity : AppCompatActivity() {
                 Log.e("TAG", "카카오계정으로 로그인 실패", error)
             } else if (token != null) {
                 Log.i("TAG", "카카오계정으로 로그인 성공 ${token.accessToken}")
-//                // 디버깅용
+//                // 디버깅용 (사용자모드)
 //                startActivity(userIntent)
+
+//                // 디버깅용 (담당자모드)
+//                startActivity(ExpertIntent)
 
                 // Node.js 서버에 로그인 요청
                 RetrofitClass.api.logIn(token.accessToken)!!.enqueue(object : Callback<loginResponse>{
@@ -73,15 +76,18 @@ class MainActivity : AppCompatActivity() {
                             UserInfo.jwt = response.body()?.jwt
                             Log.i("로그인", "${UserInfo.id} + ${UserInfo.name} + ${UserInfo.type} + ${UserInfo.jwt}")
 
-                            if (UserInfo.type == 0) {
-                                startActivity(userIntent)
-                                finish()
-                            }
-
-                            else if (UserInfo.type == 1) {
-                                startActivity(ExpertIntent)
-                                finish()
-                            }
+                            // 디버깅용 (담당자 모드)
+                            startActivity(ExpertIntent)
+                            finish()
+//                            if (UserInfo.type == 0) {
+//                                startActivity(userIntent)
+//                                finish()
+//                            }
+//
+//                            else if (UserInfo.type == 1) {
+//                                startActivity(ExpertIntent)
+//                                finish()
+//                            }
                         }
                         else { // 비회원인 경우 회원가입 액티비티로 진행
                             Log.i("로그인", "비회원 계정 ${response.body()?.name}")
