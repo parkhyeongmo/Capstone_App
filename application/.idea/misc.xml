@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2835" />
+        <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable/ic_defaultimage.xml" value="0.2835" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/activity_account.xml" value="0.36614583333333334" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/activity_auth_code_handler.xml" value="0.36614583333333334" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/activity_expert.xml" value="0.25" />

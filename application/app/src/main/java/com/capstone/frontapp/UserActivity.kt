@@ -24,6 +24,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -94,7 +95,16 @@ class UserActivity : AppCompatActivity() {
         startActivityForResult(intent, 3000)
     }
 
+    // 이미지 파일명 랜덤 생성
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun RandomFileName() : String {
+        val fineName : String = SimpleDateFormat("yyyyMMddHHmmss").format(System.currentTimeMillis())
+        val num : Int = (Math.random() * 100000).toInt()
+        return fineName + num.toString()
+    }
+    
     // Server로 이미지 업로드
+    @RequiresApi(Build.VERSION_CODES.N)
     fun uploadImg() {
 
         // 파일명과 파일을 저장할 변수
@@ -103,9 +113,8 @@ class UserActivity : AppCompatActivity() {
 
         // 갤러리에서 사진 선택 시
         if (selectedUri != null && shootedBitmap == null) {
-            // 파일 이름 저장 및 이미지 Uri를 이용해 비트맵으로 만듦
-            val imageUri = selectedUri.toString().split('%')
-            fileName = imageUri[1] + ".jpg"
+            // 파일 이름 랜덤 생성 및 이미지 Uri를 이용해 비트맵으로 만듦
+            fileName = RandomFileName() + ".jpg"
             bitmap = selectedUri?.let {
                 if (Build.VERSION.SDK_INT < 28) {
                     MediaStore.Images.Media.getBitmap(contentResolver, it)
@@ -115,20 +124,21 @@ class UserActivity : AppCompatActivity() {
                     ImageDecoder.decodeBitmap(source)
                 }
             }
-            selectedUri = null
         }
+
         // 카메라로 사진 촬영 시
         else if (selectedUri == null && shootedBitmap != null) {
             bitmap = shootedBitmap
-            fileName = shootedBitmap.toString().split('@')[1] + ".jpg"
-            shootedBitmap = null
+            fileName = RandomFileName() + ".jpg"
         }
+
         // 선택 또는 촬영된 사진이 없을 경우
         else {
             Toast.makeText(this, "선택된 이미지가 없습니다.", Toast.LENGTH_SHORT).show()
             return
         }
 
+        Log.i("파일명", fileName)
         // RequestBody 생성
         val bitmapRequestBody = bitmap?.let { BitmapRequestBody(it) }
         val body : MultipartBody.Part? =
@@ -145,6 +155,11 @@ class UserActivity : AppCompatActivity() {
                 Log.i("img send", "fail " + t.message.toString())
             }
         })
+
+        val imagePreview = findViewById<ImageView>(R.id.imagePreview)
+        imagePreview.setImageResource(R.drawable.ic_defaultimage)
+        shootedBitmap = null
+        selectedUri = null
 
     }
 

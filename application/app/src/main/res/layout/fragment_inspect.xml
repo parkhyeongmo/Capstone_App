@@ -60,7 +60,7 @@
         <ImageView
             android:id="@+id/imagePreview"
 
-            android:background="@color/black"
+            android:src="@drawable/ic_defaultimage"
             android:layout_width="300dp"
             android:layout_height="300dp"
             android:layout_margin="30dp"
