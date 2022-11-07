@@ -4,7 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2835" />
+        <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable/ic__34226_back_arrow_left_icon.xml" value="0.2835" />
+        <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable/ic__853767_kashifarif_user_profile_person_account_icon.xml" value="0.2835" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable/ic_defaultimage.xml" value="0.2835" />
+        <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2835" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/activity_account.xml" value="0.36614583333333334" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/activity_auth_code_handler.xml" value="0.36614583333333334" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/activity_expert.xml" value="0.25" />
@@ -21,6 +24,7 @@
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/fragment_inspect.xml" value="0.36614583333333334" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/fragment_user_call.xml" value="0.36614583333333334" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/fragment_user_result_list.xml" value="0.36614583333333334" />
+        <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/partslist_item.xml" value="0.36614583333333334" />
       </map>
     </option>
   </component>

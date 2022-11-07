@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.navigation.findNavController
 
@@ -28,7 +29,7 @@ class ExpertRegNumFragment : Fragment() {
         nameSet.text = UserInfo.name + "님"
 
         // 계정 관리 화면 이동 버튼
-        view.findViewById<Button>(R.id.btn_account).setOnClickListener {
+        view.findViewById<ImageButton>(R.id.btn_account).setOnClickListener {
             val intent = Intent(context, AccountActivity::class.java)
             startActivity(intent)
         }

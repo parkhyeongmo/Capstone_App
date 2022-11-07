@@ -26,11 +26,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_account"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@color/black"
+            android:background="@color/white"
+            android:src="@drawable/ic__853767_kashifarif_user_profile_person_account_icon"
 
             android:text="계정"
             android:textColor="@color/white"

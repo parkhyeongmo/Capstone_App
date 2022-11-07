@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import com.kakao.sdk.user.UserApiClient
@@ -27,10 +28,8 @@ class AccountActivity : AppCompatActivity() {
         val btn_logout = findViewById<Button>(R.id.btn_logout)
         btn_logout.setOnClickListener{
 
-
             // 카카오 로그아웃
             UserApiClient.instance.logout { error ->
-
                 if(error != null){
                     Log.e("로그아웃", "실패, token 삭제됨", error)
                 }
@@ -42,9 +41,7 @@ class AccountActivity : AppCompatActivity() {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK) // 로그아웃 시 Stack의 이전 활동 전부 종료
                     startActivity(intent)
                     finish()
-
                 }
-
             }
 
         }
@@ -94,6 +91,11 @@ class AccountActivity : AppCompatActivity() {
 
         }
 
+        // 뒤로가기 버튼
+        val btn_back = findViewById<ImageButton>(R.id.btn_back)
+        btn_back.setOnClickListener {
+            onBackPressed()
+        }
 
     }
 }
