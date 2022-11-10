@@ -43,12 +43,20 @@ data class part(
 data class inspection(
     @SerializedName("tester")
     val tester: String,
-    @SerializedName("part")
+    @SerializedName("partName")
     val part: String,
-    @SerializedName("isdefected")
+    @SerializedName("partStock")
+    val stock: Int,
+    @SerializedName("isDefected")
     val isdefected: Boolean,
-    @SerializedName("isfixed")
-    val isfixed: Boolean
+    @SerializedName("defectedType")
+    val defect_type: String,
+    @SerializedName("isFixed")
+    val isfixed: Boolean,
+    @SerializedName("testDate")
+    val date: String,
+    @SerializedName("memo")
+    val memo: String
 )
 
 // 검사 내역 Response data class
@@ -58,10 +66,16 @@ data class inspectList(
 
 // 검사 내역 항목 Response data class
 data class inspectListItem(
-    val date: String,
+    @SerializedName("tester")
+    val tester: String,
+    @SerializedName("partName")
     val part: String,
+    @SerializedName("isDefected")
     val isdefected: Boolean,
-    val isfixed: Boolean
+    @SerializedName("isFixed")
+    val isfixed: Boolean,
+    @SerializedName("date")
+    val date: String
 )
 
 interface APIInterface {
@@ -115,13 +129,15 @@ interface APIInterface {
     // 검사 내역 목록
     @GET("/test/list?sortby=")
     fun getList(
-//        @Header("authorization") jwtToken: String
+        @Header("authorization") jwtToken: String,
+        @Body params: HashMap<String, Any>
     ): Call<inspectList>
 
     // 검사 상세 결과
     @GET("/test/:test_id")
     fun getResult(
-        @Header("authorization") jwtToken: String
+        @Header("authorization") jwtToken: String,
+        @Body params: HashMap<String, Any>
     ): Call<inspection>
 
     // 메모 등록
