@@ -38,24 +38,35 @@ class ExpertStockFragment : Fragment() {
         }
 
         // 부품 목록
-        val list = mutableListOf<PartsListViewModel>()
+        val list = mutableListOf<part>()
+
+        list.add(part(1, "덕트", 1))
+        list.add(part(2, "선체", 2))
+        list.add(part(3, "선박배관", 3))
+        list.add(part(4, "케이블", 4))
+        list.add(part(5, "미정", 5))
+
 
 //        // 부품 목록 요청 API
-//        RetrofitClass.api.getParts()!!.enqueue(object : retrofit2.Callback<returnPartsList> {
-//            override fun onResponse(call: Call<returnPartsList>, response: Response<returnPartsList>) {
+//        RetrofitClass.api.getParts()!!.enqueue(object : retrofit2.Callback<partsList> {
+//            override fun onResponse(call: Call<partsList>, response: Response<partsList>) {
 //                // 각 부품 별 이름, 재고 목록에 추가
 //                for (i in response.body()!!.partsList) {
-//                    list.add(PartsListViewModel(i.part_id, i.part_name, i.stock))
+//                    list.add(part(i.part_id, i.part_name, i.stock))
 //                }
 //                // Listview로 출력
 //                val listAdapter = PartsListViewAdapter(list)
 //                view.findViewById<ListView>(R.id.part_list_view).adapter = listAdapter
 //            }
 //
-//            override fun onFailure(call: Call<returnPartsList>, t: Throwable) {
+//            override fun onFailure(call: Call<partsList>, t: Throwable) {
 //                Log.i("부품 목록 호출", "실패")
 //            }
 //        })
+
+        // Listview로 출력
+                val listAdapter = PartsListViewAdapter(list)
+                view.findViewById<ListView>(R.id.part_list_view).adapter = listAdapter
 
         // 관리자 검사 내역 화면 이동
         view.findViewById<Button>(R.id.btn_expert_list).setOnClickListener {

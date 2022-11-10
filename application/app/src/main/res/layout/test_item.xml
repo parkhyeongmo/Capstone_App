@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:layout_margin="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/under_line">
+
+    <TextView
+        android:id="@+id/date"
+        android:text="2022/11/08 22:47:11"
+        android:textSize="20sp"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/part"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="20dp"
+        android:text="부품명 : 덕트"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/date"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/isdefected"
+        android:text="불량 : O"
+        android:textSize="20sp"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/date"/>
+
+    <TextView
+        android:id="@+id/isfixed"
+        android:text="조치 상태 : O"
+        android:textSize="20sp"
+
+        android:layout_marginStart="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/isdefected"
+        app:layout_constraintTop_toBottomOf="@id/date"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

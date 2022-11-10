@@ -32,7 +32,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/ic__853767_kashifarif_user_profile_person_account_icon"
-            android:background="@color/white"
+            android:background="#00000000"
 
             android:text="계정"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -42,6 +42,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -58,6 +59,29 @@
 
     </LinearLayout>
 
+    <Spinner
+        android:id="@+id/spinner_sort"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="10dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout9"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/expert_list_recyclerview"
+        tools:listitem="@layout/test_item"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="170dp"
+        android:layout_marginBottom="80dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"

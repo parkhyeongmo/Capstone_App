@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 
-class PartsListViewAdapter(val list : MutableList<PartsListViewModel>) : BaseAdapter() {
+class PartsListViewAdapter(val list : MutableList<part>) : BaseAdapter() {
     override fun getCount(): Int {
         return list.count()
     }
@@ -33,6 +33,5 @@ class PartsListViewAdapter(val list : MutableList<PartsListViewModel>) : BaseAda
         stock.text = list[p0].stock.toString()
 
         return converView!!
-
     }
 }

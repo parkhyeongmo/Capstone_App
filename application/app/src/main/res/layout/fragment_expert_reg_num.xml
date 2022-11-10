@@ -32,10 +32,10 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/ic__853767_kashifarif_user_profile_person_account_icon"
-            android:background="@color/white"
+            android:background="#00000000"
 
             android:text="계정"
-            android:textColor="@color/white"
+            android:textColor="#00000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

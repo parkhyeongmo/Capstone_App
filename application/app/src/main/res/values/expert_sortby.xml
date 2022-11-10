@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="expert_sortby">
+        <item>전체</item>
+        <item>미조치</item>
+        <item>덕트</item>
+        <item>선체</item>
+        <item>선박배관</item>
+        <item>케이블</item>
+        <item>부품E</item>
+    </string-array>
+</resources>
