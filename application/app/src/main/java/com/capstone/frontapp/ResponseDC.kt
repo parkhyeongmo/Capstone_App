@@ -66,8 +66,8 @@ data class inspectList(
 
 // 검사 내역 항목 Response data class
 data class inspectListItem(
-    @SerializedName("tester")
-    val tester: String,
+    @SerializedName("testId")
+    val testid: Int,
     @SerializedName("partName")
     val part: String,
     @SerializedName("isDefected")

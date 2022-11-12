@@ -20,6 +20,8 @@ class AccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account)
 
+        val intent = Intent(this, MainActivity::class.java)
+
         // 상단바 사용자 이름 설정
         val nameSet = findViewById<TextView>(R.id.user_name)
         nameSet.text = UserInfo.name + "님"
@@ -36,8 +38,11 @@ class AccountActivity : AppCompatActivity() {
 
                 else{
                     Log.i("로그아웃", "성공, token 삭제됨")
+                    UserInfo.id = null
+                    UserInfo.type = null
+                    UserInfo.name = null
+                    UserInfo.jwt = null
 
-                    val intent = Intent(this, MainActivity::class.java)
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK) // 로그아웃 시 Stack의 이전 활동 전부 종료
                     startActivity(intent)
                     finish()
@@ -46,7 +51,6 @@ class AccountActivity : AppCompatActivity() {
 
         }
 
-        val intent = Intent(this, MainActivity::class.java)
         val successToast = Toast.makeText(this, "회원탈퇴 성공", Toast.LENGTH_SHORT)
         val failToast = Toast.makeText(this, "회원탈퇴 fail", Toast.LENGTH_SHORT)
 

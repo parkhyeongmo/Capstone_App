@@ -17,7 +17,6 @@ import retrofit2.Response
 
 class SignupActivity : AppCompatActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)

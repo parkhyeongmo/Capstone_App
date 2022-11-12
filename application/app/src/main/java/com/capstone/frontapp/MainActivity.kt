@@ -22,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 // Node.js 서버 통신 설정 싱글톤 패턴으로 생성
 object RetrofitClass {
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://0c0b-220-117-80-61.ngrok.io")
+        .baseUrl("https://1b77-115-91-214-4.jp.ngrok.io")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
@@ -30,12 +30,10 @@ object RetrofitClass {
 }
 
 object UserInfo {
-
     var id : String? = null
     var name : String? = null
     var type : Int? = null
     var jwt : String? = null
-
 }
 
 class MainActivity : AppCompatActivity() {
@@ -106,6 +104,7 @@ class MainActivity : AppCompatActivity() {
 
         // 카카오 로그인 버튼 이벤트
         btn_kakao_login.setOnClickListener{
+
             // 카카오톡으로 로그인 시도
             if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
                 UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
@@ -164,6 +163,7 @@ class MainActivity : AppCompatActivity() {
             else {
                 UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
             }
+
         }
 
     }
