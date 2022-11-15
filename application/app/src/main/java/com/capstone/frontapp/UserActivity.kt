@@ -104,7 +104,7 @@ class UserActivity : AppCompatActivity() {
     
     // Server로 이미지 업로드
     @RequiresApi(Build.VERSION_CODES.N)
-    fun uploadImg() {
+    fun inspect() {
 
         // 파일명과 파일을 저장할 변수
         var fileName : String? = null
@@ -145,13 +145,19 @@ class UserActivity : AppCompatActivity() {
             else
                 MultipartBody.Part.createFormData("filename", fileName, bitmapRequestBody!!)
 
+        val failToast = Toast.makeText(this, "부품 검사 실패", Toast.LENGTH_SHORT)
+        val intent = Intent(this, UserResultActivity::class.java)
+
         // api 호출
-        RetrofitClass.api.test(body)!!.enqueue(object : retrofit2.Callback<result> {
-            override fun onResponse(call: Call<result>, response: Response<result>) {
-                Log.i("img send", "success " + response.body()?.rst.toString())
+        RetrofitClass.api.inspect(UserInfo.jwt.toString(), body)!!.enqueue(object : retrofit2.Callback<inspection> {
+            override fun onResponse(call: Call<inspection>, response: Response<inspection>) {
+                intent.putExtra("inspection", response.body()!!)
+                startActivity(intent)
             }
-            override fun onFailure(call: Call<result>, t: Throwable) {
-                Log.i("img send", "fail " + t.message.toString())
+
+            override fun onFailure(call: Call<inspection>, t: Throwable) {
+                Log.i("부품 검사", "살패" + t.message)
+                failToast.show()
             }
         })
 

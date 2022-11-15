@@ -5,6 +5,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
+import java.io.Serializable
 
 // 로그인 결과 Response data class
 data class loginResponse(
@@ -48,16 +49,18 @@ data class inspection(
     @SerializedName("partStock")
     val stock: Int,
     @SerializedName("isDefected")
-    val isdefected: Boolean,
+    val isdefected: Int,
     @SerializedName("defectedType")
     val defect_type: String,
     @SerializedName("isFixed")
-    val isfixed: Boolean,
+    val isfixed: Int,
     @SerializedName("testDate")
     val date: String,
     @SerializedName("memo")
-    val memo: String
-)
+    val memo: String,
+//    @SerializedName("image")
+//    val image: String
+) : Serializable
 
 // 검사 내역 Response data class
 data class inspectList(
@@ -120,17 +123,16 @@ interface APIInterface {
 
     // 부품 품질 검사
     @Multipart
-    @POST("/test")
+    @POST("/inspection")
     fun inspect(
         @Header("authorization") jwtToken: String,
         @Part image: MultipartBody.Part?
     ): Call<inspection>
 
     // 검사 내역 목록
-    @GET("/test/list?sortby=")
+    @GET("/test/list?")
     fun getList(
-        @Header("authorization") jwtToken: String,
-        @Body params: HashMap<String, Any>
+        @Header("authorization") jwtToken: String
     ): Call<inspectList>
 
     // 검사 상세 결과

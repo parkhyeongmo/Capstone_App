@@ -12,6 +12,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kakao.sdk.user.model.User
+import retrofit2.Call
+import retrofit2.Response
+import javax.security.auth.callback.Callback
 
 class UserResultListFragment : Fragment() {
 
@@ -63,7 +66,23 @@ class UserResultListFragment : Fragment() {
 
         rvAdapter.itemClick = object : InspectRVAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
-                Toast.makeText(UserActivity, items[position].toString(), Toast.LENGTH_SHORT).show()
+                val params = HashMap<String, Any>()
+                params.put("testId", items[position].testid)
+
+                RetrofitClass.api.getResult(UserInfo.jwt.toString(), params)!!.enqueue(object : retrofit2.Callback<inspection> {
+                    override fun onResponse(
+                        call: Call<inspection>,
+                        response: Response<inspection>
+                    ) {
+                        val intent = Intent(UserActivity, UserResultActivity::class.java)
+                        intent.putExtra("inspection", response.body()!!)
+                        startActivity(intent)
+                    }
+
+                    override fun onFailure(call: Call<inspection>, t: Throwable) {
+                        Toast.makeText(UserActivity, "부품 검사 실패", Toast.LENGTH_SHORT).show()
+                    }
+                })
             }
         }
 

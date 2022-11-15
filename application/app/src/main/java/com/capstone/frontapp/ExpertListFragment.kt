@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import retrofit2.Call
+import retrofit2.Response
 
 class ExpertListFragment : Fragment() {
 
@@ -56,6 +58,28 @@ class ExpertListFragment : Fragment() {
         val rvAdapter = InspectRVAdapter(items)
 
         inspectRV.adapter = rvAdapter
+
+        rvAdapter.itemClick = object : InspectRVAdapter.ItemClick {
+            override fun onClick(view: View, position: Int) {
+                val params = HashMap<String, Any>()
+                params.put("testId", items[position].testid)
+
+                RetrofitClass.api.getResult(UserInfo.jwt.toString(), params)!!.enqueue(object : retrofit2.Callback<inspection> {
+                    override fun onResponse(
+                        call: Call<inspection>,
+                        response: Response<inspection>
+                    ) {
+                        val intent = Intent(ExpertActivity, UserResultActivity::class.java)
+                        intent.putExtra("inspection", response.body()!!)
+                        startActivity(intent)
+                    }
+
+                    override fun onFailure(call: Call<inspection>, t: Throwable) {
+                        Toast.makeText(ExpertActivity, "부품 검사 실패", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }
+        }
 
         view.findViewById<Button>(R.id.btn_stock).setOnClickListener {
             it.findNavController().navigate(R.id.action_expertListFragment_to_expertStockFragment)
