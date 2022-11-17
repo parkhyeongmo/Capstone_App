@@ -137,7 +137,6 @@ class UserActivity : AppCompatActivity() {
             return
         }
 
-        Log.i("파일명", fileName)
         // RequestBody 생성
         val bitmapRequestBody = bitmap?.let { BitmapRequestBody(it) }
         val body : MultipartBody.Part? =
@@ -149,14 +148,16 @@ class UserActivity : AppCompatActivity() {
         val intent = Intent(this, UserResultActivity::class.java)
 
         // api 호출
-        RetrofitClass.api.inspect(UserInfo.jwt.toString(), body)!!.enqueue(object : retrofit2.Callback<inspection> {
-            override fun onResponse(call: Call<inspection>, response: Response<inspection>) {
-                intent.putExtra("inspection", response.body()!!)
-                startActivity(intent)
+        RetrofitClass.api.inspect(UserInfo.jwt.toString(), body)!!.enqueue(object : retrofit2.Callback<inspectResult> {
+            override fun onResponse(call: Call<inspectResult>, response: Response<inspectResult>) {
+                Log.i("성공", response.body()!!.toString())
+                if(response.body() != null) {
+                    intent.putExtra("inspection", response.body()!!)
+                    startActivity(intent)
+                }
             }
-
-            override fun onFailure(call: Call<inspection>, t: Throwable) {
-                Log.i("부품 검사", "살패" + t.message)
+            override fun onFailure(call: Call<inspectResult>, t: Throwable) {
+                Log.i("부품 검사", "실패 " + t.message)
                 failToast.show()
             }
         })

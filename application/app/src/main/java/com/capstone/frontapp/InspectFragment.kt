@@ -59,7 +59,7 @@ class InspectFragment : Fragment() {
 
         // 검사하기 버튼
         view.findViewById<Button>(R.id.btn_summit).setOnClickListener {
-//            (activity as UserActivity).inspect()
+            (activity as UserActivity).inspect()
         }
 
         // 사용자 검사 내역 화면 이동

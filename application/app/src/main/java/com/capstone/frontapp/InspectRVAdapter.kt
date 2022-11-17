@@ -6,23 +6,30 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class InspectRVAdapter(val list: MutableList<inspectListItem>) : RecyclerView.Adapter<InspectRVAdapter.ViewHolder>() {
+class InspectRVAdapter() : RecyclerView.Adapter<InspectRVAdapter.ViewHolder>() {
+
+    private var list = ArrayList<inspectListItem>()
+
+    fun setList(list: ArrayList<inspectListItem>) {
+        this.list.clear()
+        this.list.addAll(list)
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.test_item, parent, false)
-
         return ViewHolder(view)
     }
 
     interface ItemClick {
-        fun onClick(view : View, position: Int)
+        fun onClick(view: View, position: Int, testId: Int)
     }
-
     var itemClick : ItemClick? = null
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (itemClick != null) {
-            holder.itemView.setOnClickListener { v->
-                itemClick?.onClick(v, position)
+            holder.itemView.setOnClickListener { v ->
+                itemClick?.onClick(v, position, list[position].testid)
             }
         }
         holder.bindItems(list[position])
@@ -35,6 +42,12 @@ class InspectRVAdapter(val list: MutableList<inspectListItem>) : RecyclerView.Ad
 
     inner class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
 
+        init {
+            itemView.setOnClickListener {
+
+            }
+        }
+
         fun bindItems(item : inspectListItem) {
             val date = itemView.findViewById<TextView>(R.id.date)
             val part = itemView.findViewById<TextView>(R.id.part)
@@ -42,17 +55,23 @@ class InspectRVAdapter(val list: MutableList<inspectListItem>) : RecyclerView.Ad
             val isfixed = itemView.findViewById<TextView>(R.id.isfixed)
 
             date.text = item.date
-            part.text = "부품명 : " + item.part
 
-            if (item.isdefected)
+            if (item.isdefected == 1) {
                 isdefected.text = "불량 : O"
-            else
-                isdefected.text = "불량 : X"
+                part.text = item.part
+                if (item.isfixed == 1) {
+                    isfixed.text = "조치 : O"
+                }
+                else {
+                    isfixed.text = "조치 : X"
+                }
 
-            if (item.isfixed)
-                isfixed.text = "조치 상태 : O"
-            else
-                isfixed.text = "조치 상태 : X"
+            }
+            else {
+                isdefected.text = "불량 : X"
+                part.text = " "
+                isfixed.text = " "
+            }
 
         }
 

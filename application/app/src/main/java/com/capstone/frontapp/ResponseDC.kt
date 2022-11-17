@@ -1,11 +1,13 @@
 package com.capstone.frontapp
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 import java.io.Serializable
+import java.util.ArrayList
 
 // 로그인 결과 Response data class
 data class loginResponse(
@@ -40,7 +42,15 @@ data class part(
     val stock: Int
 )
 
-// 부품 검사 결과 Response data class
+// 부품 검사 결과 Resonse data class
+data class inspectResult(
+    @SerializedName("result")
+    val result: inspection,
+    @SerializedName("imageStr")
+    val imgStr: String
+) : Serializable
+
+// 부품 검사 결과 상세 내역 Response data class
 data class inspection(
     @SerializedName("tester")
     val tester: String,
@@ -51,20 +61,23 @@ data class inspection(
     @SerializedName("isDefected")
     val isdefected: Int,
     @SerializedName("defectedType")
-    val defect_type: String,
+    val defect_type: String?,
     @SerializedName("isFixed")
     val isfixed: Int,
     @SerializedName("testDate")
     val date: String,
     @SerializedName("memo")
     val memo: String,
-//    @SerializedName("image")
-//    val image: String
-) : Serializable
+)
 
 // 검사 내역 Response data class
 data class inspectList(
-    val inspectList: List<inspectListItem>
+    @SerializedName("result")
+    val inspectList: ArrayList<inspectListItem>,
+    @SerializedName("hasNextPage")
+    val hasNextPage: Boolean,
+    @SerializedName("cnt")
+    val cnt: Int
 )
 
 // 검사 내역 항목 Response data class
@@ -74,20 +87,14 @@ data class inspectListItem(
     @SerializedName("partName")
     val part: String,
     @SerializedName("isDefected")
-    val isdefected: Boolean,
+    val isdefected: Int,
     @SerializedName("isFixed")
-    val isfixed: Boolean,
+    val isfixed: Int,
     @SerializedName("date")
     val date: String
 )
 
 interface APIInterface {
-
-    @Multipart
-    @POST("/inspection/upload")
-    fun test(
-        @Part image: MultipartBody.Part?
-    ): Call<result>
 
     // 로그인
     @POST("/auth/login")
@@ -112,35 +119,39 @@ interface APIInterface {
     // 부품 목록 호출
     @GET("inspection/part/list")
     fun getParts(
-//        @Header("authorization") jwtToken: String
+        @Header("authorization") jwtToken: String
     ): Call<partsList>
 
     // 부품 재고 수정
-    @PATCH("/admin/stock/:part_id")
+    @PATCH("/admin/stock/{part_id}")
     fun changeStock(
-//        @Header("authorization") jwtToken: String
+        @Header("authorization") jwtToken: String,
+        @Path("part_id") part_id: Int
     )
 
     // 부품 품질 검사
     @Multipart
-    @POST("/inspection")
+    @POST("/inspection/upload")
     fun inspect(
         @Header("authorization") jwtToken: String,
         @Part image: MultipartBody.Part?
-    ): Call<inspection>
+    ): Call<inspectResult>
 
     // 검사 내역 목록
-    @GET("/test/list?")
+    @GET("/inspection/list")
     fun getList(
-        @Header("authorization") jwtToken: String
+        @Header("authorization") jwtToken: String,
+        @Query("page") page: Int? = null,
+        @Query("part") part: Int? = null,
+        @Query("result") result: Int? = null
     ): Call<inspectList>
 
     // 검사 상세 결과
-    @GET("/test/:test_id")
+    @GET("/inspection/list/{testId}")
     fun getResult(
         @Header("authorization") jwtToken: String,
-        @Body params: HashMap<String, Any>
-    ): Call<inspection>
+        @Path("testId") testId: Int
+    ): Call<inspectResult>
 
     // 메모 등록
     @POST("/user/memo")
@@ -149,7 +160,7 @@ interface APIInterface {
     )
 
     // 메모 수정
-    @PATCH("/user/memo/:memo_id")
+    @PATCH("/user/memo/{memo_id}")
     fun changeMemo(
 
     )

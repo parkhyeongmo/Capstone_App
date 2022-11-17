@@ -22,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 // Node.js 서버 통신 설정 싱글톤 패턴으로 생성
 object RetrofitClass {
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://1b77-115-91-214-4.jp.ngrok.io")
+        .baseUrl("http://d3b9-125-129-58-224.ngrok.io")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
@@ -53,19 +53,20 @@ class MainActivity : AppCompatActivity() {
                 Log.e("TAG", "카카오계정으로 로그인 실패", error)
             } else if (token != null) {
                 Log.i("TAG", "카카오계정으로 로그인 성공 ${token.accessToken}")
+
                 // 디버깅용 (사용자모드)
-                startActivity(userIntent)
+//                startActivity(userIntent)
 
                 // 디버깅용 (담당자모드)
-//                startActivity(ExpertIntent)
+                startActivity(ExpertIntent)
 
                 // 디버깅용 (회원가입)
 //                startActivity(SignUpIntent)
 
-//                // Node.js 서버에 로그인 요청
+                // Node.js 서버에 로그인 요청
 //                RetrofitClass.api.logIn(token.accessToken)!!.enqueue(object : Callback<loginResponse>{
 //                    override fun onResponse(
-//                        call: Call<loginResponse>,r
+//                        call: Call<loginResponse>,
 //                        response: Response<loginResponse>
 //                    ) {
 //                        if (response.isSuccessful && response.code() == 200){ // 로그인 성공

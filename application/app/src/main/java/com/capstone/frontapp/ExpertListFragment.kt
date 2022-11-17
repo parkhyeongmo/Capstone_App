@@ -2,6 +2,7 @@ package com.capstone.frontapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,87 +10,330 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.capstone.frontapp.databinding.FragmentExpertListBinding
+import com.capstone.frontapp.databinding.FragmentUserResultListBinding
 import retrofit2.Call
 import retrofit2.Response
 
 class ExpertListFragment : Fragment() {
 
-    lateinit var ExpertActivity : ExpertActivity
+    private lateinit var ExpertActivity : ExpertActivity
+    private lateinit var RVAdapter : InspectRVAdapter
+
+    private var totalCount: Int = 0
+    private var hasNext: Boolean = false
+    private var page: Int = 0
+
+    private var first: Boolean = true
+    private var part: Int = 0 // 부품 종류 (전체 0, 덕트 1, 선체 2, 선박배관 3, 케이블 4, 보온재 5)
+    private var result: Int = 1 // 조치 여부 (미조치 0, 조치 1)
+    var cnt: Int = 0
+
+    private fun nextPage(): Int {
+        page++
+        return page
+    }
+
+    private fun beforePage(): Int {
+        page--
+        return page
+    }
+
+    // 다음 페이지 항목 불러오기
+    private fun nextItems() {
+
+        val items = ArrayList<inspectListItem>()
+
+        for (i: Int in 1..10) {
+            cnt++
+            items.add(inspectListItem(cnt, (cnt + 12).toString(), 1, 1, "2222/22/22"))
+        }
+
+        hasNext = true
+        nextPage()
+        RVAdapter.setList(items)
+
+//        // 전체 불량 부품 목록 호출
+//        if (part == 0) {
+//
+//            // 불량 부품 목록 호출
+//            if (result == 1) {
+//                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = nextPage()).enqueue(object : retrofit2.Callback<inspectList> {
+//                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
+//                        if (response.body() != null && response.isSuccessful){
+//                            totalCount = response.body()!!.cnt
+//                            hasNext = response.body()!!.hasNextPage
+//                            RVAdapter.setList(response.body()!!.inspectList)
+//                        }
+//                        else {
+//                            Log.i("검사 내역 호출", "실패")
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
+//                        Log.i("검사 내역 호출", "실패, " + t.message)
+//                    }
+//                })
+//            }
+//
+//            // 미조치 불량 부품 목록 호출
+//            else {
+//                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = nextPage(), result = this.result).enqueue(object : retrofit2.Callback<inspectList> {
+//                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
+//                        if (response.body() != null && response.isSuccessful){
+//                            totalCount = response.body()!!.cnt
+//                            hasNext = response.body()!!.hasNextPage
+//                            RVAdapter.setList(response.body()!!.inspectList)
+//                        }
+//                        else {
+//                            Log.i("검사 내역 호출", "실패")
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
+//                        Log.i("검사 내역 호출", "실패, " + t.message)
+//                    }
+//                })
+//            }
+//
+//
+//        }
+//
+//        // 불량 부품 종류 선택 목록 호출
+//        else {
+//            // 불량 부품 종류 선택 목록 전체 호출
+//            if (result == 1) {
+//                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = nextPage(), part = this.part).enqueue(object : retrofit2.Callback<inspectList> {
+//                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
+//                        if (response.body() != null && response.isSuccessful){
+//                            totalCount = response.body()!!.cnt
+//                            hasNext = response.body()!!.hasNextPage
+//                            RVAdapter.setList(response.body()!!.inspectList)
+//                        }
+//                        else {
+//                            Log.i("검사 내역 호출", "실패")
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
+//                        Log.i("검사 내역 호출", "실패, " + t.message)
+//                    }
+//                })
+//            }
+//            // 미조치 불량 부품 종류 선택 목록 호출
+//            else{
+//                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = nextPage(), part = this.part, result = this.result).enqueue(object : retrofit2.Callback<inspectList> {
+//                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
+//                        if (response.body() != null && response.isSuccessful){
+//                            totalCount = response.body()!!.cnt
+//                            hasNext = response.body()!!.hasNextPage
+//                            RVAdapter.setList(response.body()!!.inspectList)
+//                        }
+//                        else {
+//                            Log.i("검사 내역 호출", "실패")
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
+//                        Log.i("검사 내역 호출", "실패, " + t.message)
+//                    }
+//                })
+//            }
+//        }
+
+    }
+
+    // 이전 페이지 항목 불러오기
+    private fun beforeItems() {
+
+        val items = ArrayList<inspectListItem>()
+
+        for (i: Int in 1..10) {
+            cnt++
+            items.add(inspectListItem(cnt, cnt.toString(), 1, 1, "2222/22/22"))
+        }
+
+        hasNext = true
+        beforePage()
+        RVAdapter.setList(items)
+
+//        // 전체 불량 부품 목록 호출
+//        if (part == 0) {
+//
+//            // 불량 부품 목록 호출
+//            if (result == 1) {
+//                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = beforePage()).enqueue(object : retrofit2.Callback<inspectList> {
+//                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
+//                        if (response.body() != null && response.isSuccessful){
+//                            totalCount = response.body()!!.cnt
+//                            hasNext = response.body()!!.hasNextPage
+//                            RVAdapter.setList(response.body()!!.inspectList)
+//                        }
+//                        else {
+//                            Log.i("검사 내역 호출", "실패")
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
+//                        Log.i("검사 내역 호출", "실패, " + t.message)
+//                    }
+//                })
+//            }
+//
+//            // 미조치 불량 부품 목록 호출
+//            else {
+//                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = beforePage(), result = this.result).enqueue(object : retrofit2.Callback<inspectList> {
+//                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
+//                        if (response.body() != null && response.isSuccessful){
+//                            totalCount = response.body()!!.cnt
+//                            hasNext = response.body()!!.hasNextPage
+//                            RVAdapter.setList(response.body()!!.inspectList)
+//                        }
+//                        else {
+//                            Log.i("검사 내역 호출", "실패")
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
+//                        Log.i("검사 내역 호출", "실패, " + t.message)
+//                    }
+//                })
+//            }
+//
+//
+//        }
+//
+//        // 불량 부품 종류 선택 목록 호출
+//        else {
+//            // 불량 부품 종류 선택 목록 전체 호출
+//            if (result == 1) {
+//                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = beforePage(), part = this.part).enqueue(object : retrofit2.Callback<inspectList> {
+//                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
+//                        if (response.body() != null && response.isSuccessful){
+//                            totalCount = response.body()!!.cnt
+//                            hasNext = response.body()!!.hasNextPage
+//                            RVAdapter.setList(response.body()!!.inspectList)
+//                        }
+//                        else {
+//                            Log.i("검사 내역 호출", "실패")
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
+//                        Log.i("검사 내역 호출", "실패, " + t.message)
+//                    }
+//                })
+//            }
+//            // 미조치 불량 부품 종류 선택 목록 호출
+//            else{
+//                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = beforePage(), part = this.part, result = this.result).enqueue(object : retrofit2.Callback<inspectList> {
+//                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
+//                        if (response.body() != null && response.isSuccessful){
+//                            totalCount = response.body()!!.cnt
+//                            hasNext = response.body()!!.hasNextPage
+//                            RVAdapter.setList(response.body()!!.inspectList)
+//                        }
+//                        else {
+//                            Log.i("검사 내역 호출", "실패")
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
+//                        Log.i("검사 내역 호출", "실패, " + t.message)
+//                    }
+//                })
+//            }
+//        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ExpertActivity = context as ExpertActivity
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_expert_list, container, false)
+        val binding = FragmentExpertListBinding.inflate(inflater, container, false)
 
         // 상단바 사용자 이름 설정
-        val nameSet = view.findViewById<TextView>(R.id.user_name)
+        val nameSet = binding.userName
         nameSet.text = UserInfo.name + "님"
 
         // 계정 관리 화면 이동
-        view.findViewById<ImageButton>(R.id.btn_account).setOnClickListener {
+        binding.btnAccount.setOnClickListener {
             val intent = Intent(context, AccountActivity::class.java)
             startActivity(intent)
         }
 
+        // 부품 선택 스피너
+        val spinner = binding.spinnerSort
         val sortBy = resources.getStringArray(R.array.expert_sortby)
-        val spinnerAdapter = ArrayAdapter<String>(ExpertActivity, android.R.layout.simple_list_item_1, sortBy)
-        view.findViewById<Spinner>(R.id.spinner_sort).adapter = spinnerAdapter
+        val spinnerAdapter = ArrayAdapter(ExpertActivity, android.R.layout.simple_list_item_1, sortBy)
+        spinner.adapter = spinnerAdapter
 
-        val items = mutableListOf<inspectListItem>()
-
-        items.add(inspectListItem(1, "덕트", true, false, "2022/11/08 11:22:33"))
-        items.add(inspectListItem(2, "덕트", true, false, "2022/11/08 11:22:33"))
-        items.add(inspectListItem(3, "덕트", true, false, "2022/11/08 11:22:33"))
-        items.add(inspectListItem(4, "덕트", true, false, "2022/11/08 11:22:33"))
-        items.add(inspectListItem(5, "덕트", true, false, "2022/11/08 11:22:33"))
-        items.add(inspectListItem(6, "덕트", true, false, "2022/11/08 11:22:33"))
-        items.add(inspectListItem(7, "덕트", true, false, "2022/11/08 11:22:33"))
-        items.add(inspectListItem(8, "덕트", true, false, "2022/11/08 11:22:33"))
-        items.add(inspectListItem(9, "덕트", true, false, "2022/11/08 11:22:33"))
-        items.add(inspectListItem(10, "덕트", true, false, "2022/11/08 11:22:33"))
-        items.add(inspectListItem(11, "덕트", true, false, "2022/11/08 11:22:33"))
-        items.add(inspectListItem(12, "덕트", true, false, "2022/11/08 11:22:33"))
-
-        val inspectRV = view.findViewById<RecyclerView>(R.id.expert_list_recyclerview)
-        val rvAdapter = InspectRVAdapter(items)
-
-        inspectRV.adapter = rvAdapter
-
-        rvAdapter.itemClick = object : InspectRVAdapter.ItemClick {
-            override fun onClick(view: View, position: Int) {
-                val params = HashMap<String, Any>()
-                params.put("testId", items[position].testid)
-
-                RetrofitClass.api.getResult(UserInfo.jwt.toString(), params)!!.enqueue(object : retrofit2.Callback<inspection> {
-                    override fun onResponse(
-                        call: Call<inspection>,
-                        response: Response<inspection>
-                    ) {
-                        val intent = Intent(ExpertActivity, UserResultActivity::class.java)
-                        intent.putExtra("inspection", response.body()!!)
-                        startActivity(intent)
-                    }
-
-                    override fun onFailure(call: Call<inspection>, t: Throwable) {
-                        Toast.makeText(ExpertActivity, "부품 검사 실패", Toast.LENGTH_SHORT).show()
-                    }
-                })
+        // 부품 선택 스피너 이벤트
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                part = p2
+                if (!first) {
+                    page = 0
+                    nextItems()
+                    binding.numPage.text = page.toString()
+                }
+                else {
+                    first = false
+                }
+            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }
 
-        view.findViewById<Button>(R.id.btn_stock).setOnClickListener {
+        // 리사이클러 뷰 설정
+        RVAdapter = InspectRVAdapter()
+        val RV = binding.expertListRecyclerview
+        RV.adapter = RVAdapter
+
+        RVAdapter.itemClick = object : InspectRVAdapter.ItemClick {
+            override fun onClick(view: View, position: Int, testId: Int) {
+                // 인자로 들어오는 testId로 검사 상세 내역 호출
+            }
+        }
+
+        // 이전 페이지 버튼
+        binding.btnBackPage.setOnClickListener {
+            if (page <= 1) {
+                Toast.makeText(ExpertActivity, "첫번째 페이지입니다.", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                beforeItems()
+                binding.numPage.text = page.toString()
+            }
+        }
+
+        // 다음 페이지 버튼
+        binding.btnForwardPage.setOnClickListener {
+            if (hasNext) {
+                nextItems()
+                binding.numPage.text = page.toString()
+            }
+            else {
+                Toast.makeText(ExpertActivity, "마지막 페이지입니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // 재고 관리 화면 이동
+        binding.btnStock.setOnClickListener {
             it.findNavController().navigate(R.id.action_expertListFragment_to_expertStockFragment)
         }
 
-        view.findViewById<Button>(R.id.btn_reg_num).setOnClickListener {
+        // 번호 등록 화면 이동
+        binding.btnRegNum.setOnClickListener {
             it.findNavController().navigate(R.id.action_expertListFragment_to_expertRegNumFragment)
         }
 
-        return view
+        return binding.root
     }
 
 }
