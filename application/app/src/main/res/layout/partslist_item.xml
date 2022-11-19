@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:layout_margin="20dp"
+    android:layout_height="70dp"
+    android:layout_margin="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -29,7 +29,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout5">
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
             android:id="@+id/partStock"
@@ -43,24 +44,6 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <Button
-            android:id="@+id/btn_stock_change"
-
-            android:text="재고 변경"
-            android:textSize="20sp"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"/>
-
-    </LinearLayout>
 
 
 

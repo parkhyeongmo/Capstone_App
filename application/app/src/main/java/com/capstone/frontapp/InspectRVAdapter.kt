@@ -77,5 +77,4 @@ class InspectRVAdapter() : RecyclerView.Adapter<InspectRVAdapter.ViewHolder>() {
 
     }
 
-
 }

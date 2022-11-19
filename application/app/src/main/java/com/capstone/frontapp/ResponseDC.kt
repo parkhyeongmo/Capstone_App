@@ -29,7 +29,7 @@ data class result(
 // 부품 목록 리스트 Response data class
 data class partsList(
     @SerializedName("result")
-    val partsList: List<part>
+    val partsList: ArrayList<part>
 )
 
 // 부품 재고 Response data class
@@ -47,7 +47,7 @@ data class inspectResult(
     @SerializedName("result")
     val result: inspection,
     @SerializedName("imageStr")
-    val imgStr: String
+    val imgStr: String?
 ) : Serializable
 
 // 부품 검사 결과 상세 내역 Response data class
@@ -64,7 +64,7 @@ data class inspection(
     val defect_type: String?,
     @SerializedName("isFixed")
     val isfixed: Int,
-    @SerializedName("testDate")
+    @SerializedName("date")
     val date: String,
     @SerializedName("memo")
     val memo: String

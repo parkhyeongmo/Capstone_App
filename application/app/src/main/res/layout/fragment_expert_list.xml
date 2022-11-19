@@ -100,6 +100,7 @@
         android:textColor="@color/black"
         android:textSize="30sp"
         android:layout_marginTop="3dp"
+        android:layout_marginStart="10dp"
         app:layout_constraintStart_toEndOf="@+id/btn_back_page"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />
 
@@ -108,7 +109,7 @@
         android:layout_width="30dp"
         android:layout_height="50dp"
 
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="30dp"
         android:background="#00000000"
         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
         app:layout_constraintStart_toStartOf="@id/num_page"

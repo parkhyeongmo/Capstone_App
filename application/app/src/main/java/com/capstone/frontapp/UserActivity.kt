@@ -152,8 +152,10 @@ class UserActivity : AppCompatActivity() {
             override fun onResponse(call: Call<inspectResult>, response: Response<inspectResult>) {
                 Log.i("성공", response.body()!!.toString())
                 if(response.body() != null) {
-                    intent.putExtra("inspection", response.body()!!)
-                    startActivity(intent)
+//                    intent.putExtra("inspection", response.body()!!)
+//                    startActivity(intent)
+                    Log.i("성공 이미지", response.body()!!.imgStr.toString())
+                    Log.i("성공", response.body()!!.result.toString())
                 }
             }
             override fun onFailure(call: Call<inspectResult>, t: Throwable) {

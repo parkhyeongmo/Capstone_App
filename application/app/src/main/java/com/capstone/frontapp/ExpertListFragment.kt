@@ -42,208 +42,208 @@ class ExpertListFragment : Fragment() {
     // 다음 페이지 항목 불러오기
     private fun nextItems() {
 
-        val items = ArrayList<inspectListItem>()
+//        val items = ArrayList<inspectListItem>()
+//
+//        for (i: Int in 1..10) {
+//            cnt++
+//            items.add(inspectListItem(cnt, (cnt + 12).toString(), 1, 1, "2222/22/22"))
+//        }
+//
+//        hasNext = true
+//        nextPage()
+//        RVAdapter.setList(items)
 
-        for (i: Int in 1..10) {
-            cnt++
-            items.add(inspectListItem(cnt, (cnt + 12).toString(), 1, 1, "2222/22/22"))
+        // 전체 불량 부품 목록 호출
+        if (part == 0) {
+
+            // 불량 부품 목록 호출
+            if (result == 1) {
+                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = nextPage()).enqueue(object : retrofit2.Callback<inspectList> {
+                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
+                        if (response.body() != null && response.isSuccessful){
+                            totalCount = response.body()!!.cnt
+                            hasNext = response.body()!!.hasNextPage
+                            RVAdapter.setList(response.body()!!.inspectList)
+                        }
+                        else {
+                            Log.i("검사 내역 호출", "실패")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
+                        Log.i("검사 내역 호출", "실패, " + t.message)
+                    }
+                })
+            }
+
+            // 미조치 불량 부품 목록 호출
+            else {
+                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = nextPage(), result = this.result).enqueue(object : retrofit2.Callback<inspectList> {
+                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
+                        if (response.body() != null && response.isSuccessful){
+                            totalCount = response.body()!!.cnt
+                            hasNext = response.body()!!.hasNextPage
+                            RVAdapter.setList(response.body()!!.inspectList)
+                        }
+                        else {
+                            Log.i("검사 내역 호출", "실패")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
+                        Log.i("검사 내역 호출", "실패, " + t.message)
+                    }
+                })
+            }
+
+
         }
 
-        hasNext = true
-        nextPage()
-        RVAdapter.setList(items)
+        // 불량 부품 종류 선택 목록 호출
+        else {
+            // 불량 부품 종류 선택 목록 전체 호출
+            if (result == 1) {
+                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = nextPage(), part = this.part).enqueue(object : retrofit2.Callback<inspectList> {
+                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
+                        if (response.body() != null && response.isSuccessful){
+                            totalCount = response.body()!!.cnt
+                            hasNext = response.body()!!.hasNextPage
+                            RVAdapter.setList(response.body()!!.inspectList)
+                        }
+                        else {
+                            Log.i("검사 내역 호출", "실패")
+                        }
+                    }
 
-//        // 전체 불량 부품 목록 호출
-//        if (part == 0) {
-//
-//            // 불량 부품 목록 호출
-//            if (result == 1) {
-//                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = nextPage()).enqueue(object : retrofit2.Callback<inspectList> {
-//                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
-//                        if (response.body() != null && response.isSuccessful){
-//                            totalCount = response.body()!!.cnt
-//                            hasNext = response.body()!!.hasNextPage
-//                            RVAdapter.setList(response.body()!!.inspectList)
-//                        }
-//                        else {
-//                            Log.i("검사 내역 호출", "실패")
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
-//                        Log.i("검사 내역 호출", "실패, " + t.message)
-//                    }
-//                })
-//            }
-//
-//            // 미조치 불량 부품 목록 호출
-//            else {
-//                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = nextPage(), result = this.result).enqueue(object : retrofit2.Callback<inspectList> {
-//                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
-//                        if (response.body() != null && response.isSuccessful){
-//                            totalCount = response.body()!!.cnt
-//                            hasNext = response.body()!!.hasNextPage
-//                            RVAdapter.setList(response.body()!!.inspectList)
-//                        }
-//                        else {
-//                            Log.i("검사 내역 호출", "실패")
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
-//                        Log.i("검사 내역 호출", "실패, " + t.message)
-//                    }
-//                })
-//            }
-//
-//
-//        }
-//
-//        // 불량 부품 종류 선택 목록 호출
-//        else {
-//            // 불량 부품 종류 선택 목록 전체 호출
-//            if (result == 1) {
-//                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = nextPage(), part = this.part).enqueue(object : retrofit2.Callback<inspectList> {
-//                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
-//                        if (response.body() != null && response.isSuccessful){
-//                            totalCount = response.body()!!.cnt
-//                            hasNext = response.body()!!.hasNextPage
-//                            RVAdapter.setList(response.body()!!.inspectList)
-//                        }
-//                        else {
-//                            Log.i("검사 내역 호출", "실패")
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
-//                        Log.i("검사 내역 호출", "실패, " + t.message)
-//                    }
-//                })
-//            }
-//            // 미조치 불량 부품 종류 선택 목록 호출
-//            else{
-//                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = nextPage(), part = this.part, result = this.result).enqueue(object : retrofit2.Callback<inspectList> {
-//                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
-//                        if (response.body() != null && response.isSuccessful){
-//                            totalCount = response.body()!!.cnt
-//                            hasNext = response.body()!!.hasNextPage
-//                            RVAdapter.setList(response.body()!!.inspectList)
-//                        }
-//                        else {
-//                            Log.i("검사 내역 호출", "실패")
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
-//                        Log.i("검사 내역 호출", "실패, " + t.message)
-//                    }
-//                })
-//            }
-//        }
+                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
+                        Log.i("검사 내역 호출", "실패, " + t.message)
+                    }
+                })
+            }
+            // 미조치 불량 부품 종류 선택 목록 호출
+            else{
+                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = nextPage(), part = this.part, result = this.result).enqueue(object : retrofit2.Callback<inspectList> {
+                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
+                        if (response.body() != null && response.isSuccessful){
+                            totalCount = response.body()!!.cnt
+                            hasNext = response.body()!!.hasNextPage
+                            RVAdapter.setList(response.body()!!.inspectList)
+                        }
+                        else {
+                            Log.i("검사 내역 호출", "실패")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
+                        Log.i("검사 내역 호출", "실패, " + t.message)
+                    }
+                })
+            }
+        }
 
     }
 
     // 이전 페이지 항목 불러오기
     private fun beforeItems() {
 
-        val items = ArrayList<inspectListItem>()
+//        val items = ArrayList<inspectListItem>()
+//
+//        for (i: Int in 1..10) {
+//            cnt++
+//            items.add(inspectListItem(cnt, cnt.toString(), 1, 1, "2222/22/22"))
+//        }
+//
+//        hasNext = true
+//        beforePage()
+//        RVAdapter.setList(items)
 
-        for (i: Int in 1..10) {
-            cnt++
-            items.add(inspectListItem(cnt, cnt.toString(), 1, 1, "2222/22/22"))
+        // 전체 불량 부품 목록 호출
+        if (part == 0) {
+
+            // 불량 부품 목록 호출
+            if (result == 1) {
+                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = beforePage()).enqueue(object : retrofit2.Callback<inspectList> {
+                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
+                        if (response.body() != null && response.isSuccessful){
+                            totalCount = response.body()!!.cnt
+                            hasNext = response.body()!!.hasNextPage
+                            RVAdapter.setList(response.body()!!.inspectList)
+                        }
+                        else {
+                            Log.i("검사 내역 호출", "실패")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
+                        Log.i("검사 내역 호출", "실패, " + t.message)
+                    }
+                })
+            }
+
+            // 미조치 불량 부품 목록 호출
+            else {
+                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = beforePage(), result = this.result).enqueue(object : retrofit2.Callback<inspectList> {
+                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
+                        if (response.body() != null && response.isSuccessful){
+                            totalCount = response.body()!!.cnt
+                            hasNext = response.body()!!.hasNextPage
+                            RVAdapter.setList(response.body()!!.inspectList)
+                        }
+                        else {
+                            Log.i("검사 내역 호출", "실패")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
+                        Log.i("검사 내역 호출", "실패, " + t.message)
+                    }
+                })
+            }
+
+
         }
 
-        hasNext = true
-        beforePage()
-        RVAdapter.setList(items)
+        // 불량 부품 종류 선택 목록 호출
+        else {
+            // 불량 부품 종류 선택 목록 전체 호출
+            if (result == 1) {
+                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = beforePage(), part = this.part).enqueue(object : retrofit2.Callback<inspectList> {
+                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
+                        if (response.body() != null && response.isSuccessful){
+                            totalCount = response.body()!!.cnt
+                            hasNext = response.body()!!.hasNextPage
+                            RVAdapter.setList(response.body()!!.inspectList)
+                        }
+                        else {
+                            Log.i("검사 내역 호출", "실패")
+                        }
+                    }
 
-//        // 전체 불량 부품 목록 호출
-//        if (part == 0) {
-//
-//            // 불량 부품 목록 호출
-//            if (result == 1) {
-//                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = beforePage()).enqueue(object : retrofit2.Callback<inspectList> {
-//                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
-//                        if (response.body() != null && response.isSuccessful){
-//                            totalCount = response.body()!!.cnt
-//                            hasNext = response.body()!!.hasNextPage
-//                            RVAdapter.setList(response.body()!!.inspectList)
-//                        }
-//                        else {
-//                            Log.i("검사 내역 호출", "실패")
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
-//                        Log.i("검사 내역 호출", "실패, " + t.message)
-//                    }
-//                })
-//            }
-//
-//            // 미조치 불량 부품 목록 호출
-//            else {
-//                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = beforePage(), result = this.result).enqueue(object : retrofit2.Callback<inspectList> {
-//                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
-//                        if (response.body() != null && response.isSuccessful){
-//                            totalCount = response.body()!!.cnt
-//                            hasNext = response.body()!!.hasNextPage
-//                            RVAdapter.setList(response.body()!!.inspectList)
-//                        }
-//                        else {
-//                            Log.i("검사 내역 호출", "실패")
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
-//                        Log.i("검사 내역 호출", "실패, " + t.message)
-//                    }
-//                })
-//            }
-//
-//
-//        }
-//
-//        // 불량 부품 종류 선택 목록 호출
-//        else {
-//            // 불량 부품 종류 선택 목록 전체 호출
-//            if (result == 1) {
-//                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = beforePage(), part = this.part).enqueue(object : retrofit2.Callback<inspectList> {
-//                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
-//                        if (response.body() != null && response.isSuccessful){
-//                            totalCount = response.body()!!.cnt
-//                            hasNext = response.body()!!.hasNextPage
-//                            RVAdapter.setList(response.body()!!.inspectList)
-//                        }
-//                        else {
-//                            Log.i("검사 내역 호출", "실패")
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
-//                        Log.i("검사 내역 호출", "실패, " + t.message)
-//                    }
-//                })
-//            }
-//            // 미조치 불량 부품 종류 선택 목록 호출
-//            else{
-//                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = beforePage(), part = this.part, result = this.result).enqueue(object : retrofit2.Callback<inspectList> {
-//                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
-//                        if (response.body() != null && response.isSuccessful){
-//                            totalCount = response.body()!!.cnt
-//                            hasNext = response.body()!!.hasNextPage
-//                            RVAdapter.setList(response.body()!!.inspectList)
-//                        }
-//                        else {
-//                            Log.i("검사 내역 호출", "실패")
-//                        }
-//                    }
-//
-//                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
-//                        Log.i("검사 내역 호출", "실패, " + t.message)
-//                    }
-//                })
-//            }
-//        }
+                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
+                        Log.i("검사 내역 호출", "실패, " + t.message)
+                    }
+                })
+            }
+            // 미조치 불량 부품 종류 선택 목록 호출
+            else{
+                RetrofitClass.api.getList(UserInfo.jwt.toString(), page = beforePage(), part = this.part, result = this.result).enqueue(object : retrofit2.Callback<inspectList> {
+                    override fun onResponse(call: Call<inspectList>, response: Response<inspectList>) {
+                        if (response.body() != null && response.isSuccessful){
+                            totalCount = response.body()!!.cnt
+                            hasNext = response.body()!!.hasNextPage
+                            RVAdapter.setList(response.body()!!.inspectList)
+                        }
+                        else {
+                            Log.i("검사 내역 호출", "실패")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<inspectList>, t: Throwable) {
+                        Log.i("검사 내역 호출", "실패, " + t.message)
+                    }
+                })
+            }
+        }
 
     }
 
@@ -315,7 +315,20 @@ class ExpertListFragment : Fragment() {
 
         RVAdapter.itemClick = object : InspectRVAdapter.ItemClick {
             override fun onClick(view: View, position: Int, testId: Int) {
-                // 인자로 들어오는 testId로 검사 상세 내역 호출
+                RetrofitClass.api.getResult(UserInfo.jwt.toString(), testId).enqueue(object : retrofit2.Callback<inspectResult> {
+                    override fun onResponse(
+                        call: Call<inspectResult>,
+                        response: Response<inspectResult>
+                    ) {
+                        var intent = Intent(ExpertActivity, UserResultActivity::class.java)
+                        intent = intent.putExtra("inspection", response.body()!!)
+                        startActivity(intent)
+                    }
+
+                    override fun onFailure(call: Call<inspectResult>, t: Throwable) {
+                        Toast.makeText(ExpertActivity, "검사 결과 요청 실패", Toast.LENGTH_SHORT).show()
+                    }
+                })
             }
         }
 
