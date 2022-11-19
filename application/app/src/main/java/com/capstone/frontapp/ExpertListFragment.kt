@@ -290,10 +290,28 @@ class ExpertListFragment : Fragment() {
             }
         }
 
+        // 미조치 체크박스
+        binding.checkFixed.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                result = 0
+                page = 0
+                nextItems()
+                binding.numPage.text = page.toString()
+            }
+            else {
+                result = 1
+                page = 0
+                nextItems()
+                binding.numPage.text = page.toString()
+            }
+        }
+
         // 리사이클러 뷰 설정
         RVAdapter = InspectRVAdapter()
         val RV = binding.expertListRecyclerview
         RV.adapter = RVAdapter
+
+        nextItems()
 
         RVAdapter.itemClick = object : InspectRVAdapter.ItemClick {
             override fun onClick(view: View, position: Int, testId: Int) {

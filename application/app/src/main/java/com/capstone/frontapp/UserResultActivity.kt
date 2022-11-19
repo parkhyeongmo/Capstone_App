@@ -36,7 +36,7 @@ class UserResultActivity : AppCompatActivity() {
         // 검사 결과 화면에 반영
         findViewById<ImageView>(R.id.image_result).setImageBitmap(img)
         if (getData.result.isdefected == 0) {
-            findViewById<TextView>(R.id.txt_part_name).text = ""
+            findViewById<TextView>(R.id.txt_part_name).text = " "
             findViewById<TextView>(R.id.txt_isdefected).text = "검사결과 : 정상"
         }
         else {

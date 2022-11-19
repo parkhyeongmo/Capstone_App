@@ -67,7 +67,7 @@ data class inspection(
     @SerializedName("testDate")
     val date: String,
     @SerializedName("memo")
-    val memo: String,
+    val memo: String
 )
 
 // 검사 내역 Response data class
