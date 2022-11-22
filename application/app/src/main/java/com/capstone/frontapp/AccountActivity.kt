@@ -51,15 +51,12 @@ class AccountActivity : AppCompatActivity() {
 
         }
 
-        val successToast = Toast.makeText(this, "회원탈퇴 성공", Toast.LENGTH_SHORT)
-        val failToast = Toast.makeText(this, "회원탈퇴 fail", Toast.LENGTH_SHORT)
-
         // 카카오 회원탈퇴 버튼
         var btn_unlink = findViewById<Button>(R.id.btn_unlink)
         btn_unlink.setOnClickListener{
 
             // 계정 회원 탈퇴
-            RetrofitClass.api.unLink(UserInfo.jwt.toString())!!.enqueue(object : Callback<result> {
+            RetrofitClass.api.unLink(UserInfo.jwt.toString())!!.enqueue(object : retrofit2.Callback<result> {
 
                 override fun onResponse(call: Call<result>, response: Response<result>) {
                     Log.i("회원탈퇴", "성공" + response.body()?.rst)
@@ -77,7 +74,8 @@ class AccountActivity : AppCompatActivity() {
                         }
                         else{
                             Log.i("탈퇴", "성공")
-                            successToast.show()
+                            Toast.makeText(this@AccountActivity, "회원탈퇴 성공", Toast.LENGTH_SHORT).show()
+
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK) // 로그아웃 시 Stack의 이전 활동 전부 종료
                             startActivity(intent)
                             finish()
@@ -88,7 +86,7 @@ class AccountActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<result>, t: Throwable) {
                     Log.i("회원탈퇴", "실패" + t.message.toString())
-                    failToast.show()
+                    Toast.makeText(this@AccountActivity, "회원탈퇴 fail", Toast.LENGTH_SHORT).show()
                 }
 
             })

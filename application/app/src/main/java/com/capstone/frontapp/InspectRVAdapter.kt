@@ -3,12 +3,14 @@ package com.capstone.frontapp
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class InspectRVAdapter() : RecyclerView.Adapter<InspectRVAdapter.ViewHolder>() {
+class InspectRVAdapter(type: Int) : RecyclerView.Adapter<InspectRVAdapter.ViewHolder>() {
 
     private var list = ArrayList<inspectListItem>()
+    private var type = type
 
     fun setList(list: ArrayList<inspectListItem>) {
         this.list.clear()
@@ -51,27 +53,31 @@ class InspectRVAdapter() : RecyclerView.Adapter<InspectRVAdapter.ViewHolder>() {
         fun bindItems(item : inspectListItem) {
             val date = itemView.findViewById<TextView>(R.id.date)
             val part = itemView.findViewById<TextView>(R.id.part)
-            val isdefected = itemView.findViewById<TextView>(R.id.isdefected)
-            val isfixed = itemView.findViewById<TextView>(R.id.isfixed)
-
+            val symbol = itemView.findViewById<ImageView>(R.id.image_result_symbol)
+            
             date.text = item.date
+            part.text = item.part
 
-            if (item.isdefected == 1) {
-                isdefected.text = "불량 : O"
-                part.text = item.part
-                if (item.isfixed == 1) {
-                    isfixed.text = "조치 : O"
+            // 사용자의 경우 결과 내역에 불량 여부를 체크와 X로 표시
+            if (type == 0) {
+                if (item.isdefected == 0) {
+                    symbol.setImageResource(R.drawable.ic_baseline_done_24)                    
                 }
                 else {
-                    isfixed.text = "조치 : X"
+                    symbol.setImageResource(R.drawable.ic_baseline_clear_24)
                 }
-
             }
-            else {
-                isdefected.text = "불량 : X"
-                part.text = " "
-                isfixed.text = " "
+            
+            // 담당자의 경우 결과 내역에 조치 여부를 체크와 X로 표시
+            else if (type == 1) {
+                if (item.isfixed== 0) {
+                    symbol.setImageResource(R.drawable.ic_baseline_clear_24)
+                }
+                else {
+                    symbol.setImageResource(R.drawable.ic_baseline_done_24)
+                }
             }
+           
 
         }
 

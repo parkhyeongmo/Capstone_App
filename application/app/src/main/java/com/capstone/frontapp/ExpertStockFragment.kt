@@ -60,6 +60,28 @@ class ExpertStockFragment : Fragment() {
                 builder.setView(dialogView)
                     .setPositiveButton("변경") {dialogInterface, i ->
                         // 재고 변경 호출
+                        val body = HashMap<String, Any>()
+                        body.put("stock", dialogStock.text.toString().toInt())
+
+                        RetrofitClass.api.changeStock(UserInfo.jwt.toString(), part_id = part_id, params = body).enqueue(object : retrofit2.Callback<result> {
+                            override fun onResponse(
+                                call: Call<result>,
+                                response: Response<result>
+                            ) {
+                                if (response.isSuccessful) {
+                                    Toast.makeText(context as ExpertActivity, "재고 변경 완료", Toast.LENGTH_SHORT).show()
+                                }
+                                else{
+                                    Toast.makeText(context as ExpertActivity, "재고 변경 실패", Toast.LENGTH_SHORT).show()
+                                    Log.i("재고 변경 실패", response.code().toString())
+                                }
+                            }
+
+                            override fun onFailure(call: Call<result>, t: Throwable) {
+                                Toast.makeText(context as ExpertActivity, "재고 변경 실패", Toast.LENGTH_SHORT).show()
+                                Log.i("재고 변경 실패", t.message.toString())
+                            }
+                        })
 
                         // 재고 목록 재호출
                         RetrofitClass.api.getParts(UserInfo.jwt.toString()).enqueue(object : retrofit2.Callback<partsList> {

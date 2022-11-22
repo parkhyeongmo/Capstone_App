@@ -307,7 +307,7 @@ class ExpertListFragment : Fragment() {
         }
 
         // 리사이클러 뷰 설정
-        RVAdapter = InspectRVAdapter()
+        RVAdapter = InspectRVAdapter(UserInfo.type!!)
         val RV = binding.expertListRecyclerview
         RV.adapter = RVAdapter
 
@@ -315,20 +315,9 @@ class ExpertListFragment : Fragment() {
 
         RVAdapter.itemClick = object : InspectRVAdapter.ItemClick {
             override fun onClick(view: View, position: Int, testId: Int) {
-                RetrofitClass.api.getResult(UserInfo.jwt.toString(), testId).enqueue(object : retrofit2.Callback<inspectResult> {
-                    override fun onResponse(
-                        call: Call<inspectResult>,
-                        response: Response<inspectResult>
-                    ) {
-                        var intent = Intent(ExpertActivity, UserResultActivity::class.java)
-                        intent = intent.putExtra("inspection", response.body()!!)
-                        startActivity(intent)
-                    }
-
-                    override fun onFailure(call: Call<inspectResult>, t: Throwable) {
-                        Toast.makeText(ExpertActivity, "검사 결과 요청 실패", Toast.LENGTH_SHORT).show()
-                    }
-                })
+                var intent = Intent(ExpertActivity, UserResultActivity::class.java)
+                intent = intent.putExtra("testId", testId)
+                startActivity(intent)
             }
         }
 

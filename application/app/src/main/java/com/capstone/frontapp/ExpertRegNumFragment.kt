@@ -3,15 +3,15 @@ package com.capstone.frontapp
 import android.content.Intent
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.*
 import androidx.navigation.findNavController
+import retrofit2.Call
+import retrofit2.Response
 
 class ExpertRegNumFragment : Fragment() {
 
@@ -32,6 +32,34 @@ class ExpertRegNumFragment : Fragment() {
         view.findViewById<ImageButton>(R.id.btn_account).setOnClickListener {
             val intent = Intent(context, AccountActivity::class.java)
             startActivity(intent)
+        }
+
+        // 담당자 번호 등록 버튼
+        view.findViewById<Button>(R.id.btn_telnum).setOnClickListener {
+            val name: String? = view.findViewById<EditText>(R.id.edit_expert_name).text.toString()
+            val hp: String? = view.findViewById<EditText>(R.id.edit_expert_tel).text.toString()
+
+            // 번호 유효성 검사
+            if (hp!!.length < 12) {
+                Toast.makeText(context as ExpertActivity, "번호를 확인해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            
+            var body = HashMap<String, Any?>()
+            body.put("name", name)
+            body.put("hp", hp)
+
+            RetrofitClass.api.postExpertNum(UserInfo.jwt.toString(), body)!!.enqueue(object : retrofit2.Callback<expertNum> {
+                override fun onResponse(call: Call<expertNum>, response: Response<expertNum>) {
+                    Toast.makeText(context as ExpertActivity, "등록 완료", Toast.LENGTH_SHORT).show()
+                    Log.i("담당자 번호 등록", response.body()!!.name + " " + response.body()!!.hp)
+                }
+
+                override fun onFailure(call: Call<expertNum>, t: Throwable) {
+                    Toast.makeText(context as ExpertActivity, "등록 실패", Toast.LENGTH_SHORT).show()
+                }
+
+            })
         }
 
 

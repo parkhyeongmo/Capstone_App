@@ -58,8 +58,8 @@ class SignupActivity : AppCompatActivity() {
             var userInfo = HashMap<String, Any>()
             //userInfo.put("name", name)
             userInfo.put("type", accountType)
-            userInfo.put("empnum", empNum)
-            userInfo.put("hp", phoneNum)
+            userInfo.put("empNum", empNum)
+            userInfo.put("phoneNum", phoneNum)
 
             Log.i("버튼 터치", "${userInfo.get("name")} + ${userInfo.get("type")} + ${userInfo.get("empnum")} + ${userInfo.get("hp")}")
 

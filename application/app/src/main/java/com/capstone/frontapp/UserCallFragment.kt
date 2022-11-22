@@ -4,16 +4,16 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.findViewTreeOnBackPressedDispatcherOwner
 import androidx.navigation.findNavController
+import retrofit2.Call
+import retrofit2.Response
 
 class UserCallFragment : Fragment() {
 
@@ -29,6 +29,24 @@ class UserCallFragment : Fragment() {
         // 상단바 사용자 이름 설정
         val nameSet = view.findViewById<TextView>(R.id.user_name)
         nameSet.text = UserInfo.name + "님"
+
+        // 담당자 번호 호출
+        RetrofitClass.api.getExpertNum().enqueue(object : retrofit2.Callback<expertNum> {
+            override fun onResponse(call: Call<expertNum>, response: Response<expertNum>) {
+                if (response.isSuccessful) {
+                    view.findViewById<TextView>(R.id.expert_name).text = response.body()!!.name
+                    view.findViewById<TextView>(R.id.tel_num).text = response.body()!!.hp
+                }
+                else {
+                    Toast.makeText(context as UserActivity, "담당자 번호 불러오기 실패", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<expertNum>, t: Throwable) {
+                Toast.makeText(context as UserActivity, "담당자 번호 불러오기 실패", Toast.LENGTH_SHORT).show()
+                Log.i("담당자 번호 호출", t.message.toString())
+            }
+        })
 
         // 통화 연결 버튼 이벤트
         view.findViewById<Button>(R.id.btn_call_req).setOnClickListener {

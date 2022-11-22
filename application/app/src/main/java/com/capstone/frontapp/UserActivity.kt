@@ -36,6 +36,7 @@ import okhttp3.RequestBody
 import okio.BufferedSink
 import retrofit2.Call
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.jar.Manifest
 
@@ -94,26 +95,16 @@ class UserActivity : AppCompatActivity() {
         startActivityForResult(intent, 3000)
     }
 
-    // 이미지 파일명 랜덤 생성
-    @RequiresApi(Build.VERSION_CODES.N)
-    fun RandomFileName() : String {
-        val fineName : String = SimpleDateFormat("yyyyMMddHHmmss").format(System.currentTimeMillis())
-        val num : Int = (Math.random() * 100000).toInt()
-        return fineName + num.toString()
-    }
-    
     // Server로 이미지 업로드
     @RequiresApi(Build.VERSION_CODES.N)
     fun inspect() {
 
         // 파일명과 파일을 저장할 변수
-        var fileName : String? = null
         var bitmap : Bitmap? = null
 
         // 갤러리에서 사진 선택 시
         if (selectedUri != null && shootedBitmap == null) {
             // 파일 이름 랜덤 생성 및 이미지 Uri를 이용해 비트맵으로 만듦
-            fileName = RandomFileName() + ".jpg"
             bitmap = selectedUri?.let {
                 if (Build.VERSION.SDK_INT < 28) {
                     MediaStore.Images.Media.getBitmap(contentResolver, it)
@@ -128,7 +119,6 @@ class UserActivity : AppCompatActivity() {
         // 카메라로 사진 촬영 시
         else if (selectedUri == null && shootedBitmap != null) {
             bitmap = shootedBitmap
-            fileName = RandomFileName() + ".jpg"
         }
 
         // 선택 또는 촬영된 사진이 없을 경우
@@ -137,32 +127,14 @@ class UserActivity : AppCompatActivity() {
             return
         }
 
-        // RequestBody 생성
-        val bitmapRequestBody = bitmap?.let { BitmapRequestBody(it) }
-        val body : MultipartBody.Part? =
-            if (bitmapRequestBody == null) null
-            else
-                MultipartBody.Part.createFormData("filename", fileName, bitmapRequestBody!!)
+        // 결과 액티비티로 비트맵 파일 전송
+        val stream = ByteArrayOutputStream()
+        bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        val byteArray = stream.toByteArray()
 
-        val failToast = Toast.makeText(this, "부품 검사 실패", Toast.LENGTH_SHORT)
         val intent = Intent(this, UserResultActivity::class.java)
-
-        // api 호출
-        RetrofitClass.api.inspect(UserInfo.jwt.toString(), body)!!.enqueue(object : retrofit2.Callback<inspectResult> {
-            override fun onResponse(call: Call<inspectResult>, response: Response<inspectResult>) {
-                Log.i("성공", response.body()!!.toString())
-                if(response.body() != null) {
-//                    intent.putExtra("inspection", response.body()!!)
-//                    startActivity(intent)
-                    Log.i("성공 이미지", response.body()!!.imgStr.toString())
-                    Log.i("성공", response.body()!!.result.toString())
-                }
-            }
-            override fun onFailure(call: Call<inspectResult>, t: Throwable) {
-                Log.i("부품 검사", "실패 " + t.message)
-                failToast.show()
-            }
-        })
+        intent.putExtra("image", byteArray)
+        startActivity(intent)
 
         val imagePreview = findViewById<ImageView>(R.id.imagePreview)
         imagePreview.setImageResource(R.drawable.ic_defaultimage)

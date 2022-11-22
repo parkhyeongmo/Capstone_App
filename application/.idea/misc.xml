@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2835" />
+        <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable/dialog_edittext_background.xml" value="0.2835" />
+        <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable/dialog_radius_background.xml" value="0.2835" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable/ic__34226_back_arrow_left_icon.xml" value="0.2835" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable/ic__853767_kashifarif_user_profile_person_account_icon.xml" value="0.2835" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.2835" />
@@ -13,25 +15,30 @@
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.2835" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable/ic_defaultimage.xml" value="0.2835" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2835" />
+        <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable/result_radius_background.xml" value="0.2835" />
+        <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable/top_bar.xml" value="0.2835" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/drawable/under_line.xml" value="0.2835" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/activity_account.xml" value="0.36614583333333334" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/activity_auth_code_handler.xml" value="0.36614583333333334" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/activity_expert.xml" value="0.25" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/activity_expert_result.xml" value="0.36614583333333334" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/activity_main.xml" value="0.36614583333333334" />
-        <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/activity_signup.xml" value="0.25" />
+        <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/activity_signup.xml" value="0.33" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/activity_splash.xml" value="0.25" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/activity_user.xml" value="0.36614583333333334" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/activity_user_result.xml" value="0.36614583333333334" />
+        <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/fix_dialog.xml" value="0.3651041666666667" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/fragment_expert_list.xml" value="0.36614583333333334" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/fragment_expert_manage.xml" value="0.36614583333333334" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/fragment_expert_reg_num.xml" value="0.36614583333333334" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/fragment_expert_stock.xml" value="0.3515625" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/fragment_inspect.xml" value="0.36614583333333334" />
-        <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/fragment_user_call.xml" value="0.36614583333333334" />
+        <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/fragment_user_call.xml" value="0.33" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/fragment_user_result_list.xml" value="0.36614583333333334" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/loading_item.xml" value="0.3651041666666667" />
+        <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/memo_dialog.xml" value="0.36614583333333334" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/partslist_item.xml" value="0.36614583333333334" />
+        <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/stock_dialog.xml" value="0.36614583333333334" />
         <entry key="..\:/Github/Capstone_App/application/app/src/main/res/layout/test_item.xml" value="0.3651041666666667" />
       </map>
     </option>

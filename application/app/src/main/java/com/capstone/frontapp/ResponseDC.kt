@@ -34,12 +34,14 @@ data class partsList(
 
 // 부품 재고 Response data class
 data class part(
-    @SerializedName("part_id")
-    val part_id: Int,
     @SerializedName("name")
     val part_name: String,
     @SerializedName("stock")
-    val stock: Int
+    val stock: Int,
+    @SerializedName("member_id")
+    val member_id: Int,
+    @SerializedName("part_id")
+    val part_id: Int
 )
 
 // 부품 검사 결과 Resonse data class
@@ -47,7 +49,7 @@ data class inspectResult(
     @SerializedName("result")
     val result: inspection,
     @SerializedName("imageStr")
-    val imgStr: String?
+    val imgStr: String
 ) : Serializable
 
 // 부품 검사 결과 상세 내역 Response data class
@@ -61,13 +63,13 @@ data class inspection(
     @SerializedName("isDefected")
     val isdefected: Int,
     @SerializedName("defectedType")
-    val defect_type: String?,
+    val defect_type: String,
     @SerializedName("isFixed")
-    val isfixed: Int,
+    val isfixed: Int?,
     @SerializedName("date")
     val date: String,
     @SerializedName("memo")
-    val memo: String
+    val memo: String?
 )
 
 // 검사 내역 Response data class
@@ -89,9 +91,17 @@ data class inspectListItem(
     @SerializedName("isDefected")
     val isdefected: Int,
     @SerializedName("isFixed")
-    val isfixed: Int,
+    val isfixed: Int?,
     @SerializedName("date")
     val date: String
+)
+
+// 담당자 번호 Response data class
+data class expertNum(
+    @SerializedName("name")
+    val name: String,
+    @SerializedName("hp")
+    val hp: String
 )
 
 interface APIInterface {
@@ -115,19 +125,6 @@ interface APIInterface {
     fun unLink(
         @Header("authorization") jwtToken: String
     ): Call<result>
-
-    // 부품 목록 호출
-    @GET("inspection/part/list")
-    fun getParts(
-        @Header("authorization") jwtToken: String
-    ): Call<partsList>
-
-    // 부품 재고 수정
-    @PATCH("/admin/stock/{part_id}")
-    fun changeStock(
-        @Header("authorization") jwtToken: String,
-        @Path("part_id") part_id: Int
-    )
 
     // 부품 품질 검사
     @Multipart
@@ -154,27 +151,72 @@ interface APIInterface {
     ): Call<inspectResult>
 
     // 메모 등록
-    @POST("/user/memo")
-    fun memo(
-
-    )
+    @POST("/memo")
+    fun postMemo(
+        @Header("authorization") jwtToken: String,
+        @Body params: HashMap<String, Any>
+    ): Call<result>
 
     // 메모 수정
-    @PATCH("/user/memo/{memo_id}")
+    @PUT("/memo/{test_id}")
     fun changeMemo(
-
-    )
+        @Header("authorization") jwtToken: String,
+        @Path("test_id") testId: Int,
+        @Body params: HashMap<String, Any>
+    ): Call<result>
 
     // 메모 삭제
-    @DELETE("/user/memo/:memo_id")
+    @DELETE("/memo/{test_id}")
     fun deleteMemo(
+        @Header("authorization") jwtToken: String,
+        @Path("test_id") testId: Int
+    ): Call<result>
 
-    )
+    // 담당자 번호 호출
+    @GET("/engineer")
+    fun getExpertNum(
 
-    // 관리자 불량 조치
-    @PATCH("/admin/test/:test_id")
-    fun complete(
+    ): Call<expertNum>
 
-    )
+    // 담당자 번호 등록
+    @POST("/engineer")
+    fun postExpertNum(
+        @Header("authorization") jwtToken: String,
+        @Body params: HashMap<String, Any?>
+    ): Call<expertNum>
+
+    // 담당자 번호 수정
+    @PUT("/engineer")
+    fun changeExpertNum(
+        @Header("authorization") jwtToken: String,
+        @Body params: HashMap<String, Any?>
+    ): Call<result>
+
+    // 담당자 번호 삭제
+    @DELETE("/engineer")
+    fun deleteExpertNum(
+        @Header("authorization") jwtToken: String
+    ): Call<result>
+
+    // 부품 목록 호출
+    @GET("/part/getallparts")
+    fun getParts(
+        @Header("authorization") jwtToken: String
+    ): Call<partsList>
+
+    // 부품 재고 수정
+    @PUT("/part/{part_id}")
+    fun changeStock(
+        @Header("authorization") jwtToken: String,
+        @Path("part_id") part_id: Int,
+        @Body params: HashMap<String, Any>
+    ): Call<result>
+
+    // 불량 부품 조치 처리
+    @PUT("/fix/{test_id}")
+    fun fix(
+        @Header("authorization") jwtToken: String,
+        @Path("test_id") test_id: Int
+    ): Call<result>
 
 }
