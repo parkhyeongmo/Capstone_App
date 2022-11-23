@@ -96,7 +96,6 @@ class ExpertListFragment : Fragment() {
                 })
             }
 
-
         }
 
         // 불량 부품 종류 선택 목록 호출
@@ -315,7 +314,7 @@ class ExpertListFragment : Fragment() {
 
         RVAdapter.itemClick = object : InspectRVAdapter.ItemClick {
             override fun onClick(view: View, position: Int, testId: Int) {
-                var intent = Intent(ExpertActivity, UserResultActivity::class.java)
+                var intent = Intent(ExpertActivity, ExpertResultActivity::class.java)
                 intent = intent.putExtra("testId", testId)
                 startActivity(intent)
             }

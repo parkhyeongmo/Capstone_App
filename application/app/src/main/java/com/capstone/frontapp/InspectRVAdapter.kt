@@ -60,7 +60,7 @@ class InspectRVAdapter(type: Int) : RecyclerView.Adapter<InspectRVAdapter.ViewHo
 
             // 사용자의 경우 결과 내역에 불량 여부를 체크와 X로 표시
             if (type == 0) {
-                if (item.isdefected == 0) {
+                if (item.isdefected == 0 || item.isfixed == 1) {
                     symbol.setImageResource(R.drawable.ic_baseline_done_24)                    
                 }
                 else {

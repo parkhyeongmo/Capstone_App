@@ -29,10 +29,6 @@ class SignupActivity : AppCompatActivity() {
         val userIntent = Intent(this, UserActivity::class.java)
         val expertIntent = Intent(this, ExpertActivity::class.java)
 
-        // 전화번호 입력 폼 양식 설정
-        val phone_num = findViewById<EditText>(R.id.edit_phone_num)
-        phone_num.addTextChangedListener(PhoneNumberFormattingTextWatcher())
-
         val btn_signup = findViewById<Button>(R.id.btn_signup)
         val btn_cancel = findViewById<Button>(R.id.btn_cancel)
 
@@ -44,19 +40,19 @@ class SignupActivity : AppCompatActivity() {
             }
         }
 
-        //val nameEdit = findViewById<EditText>(R.id.edit_name)
         val empNumEdit = findViewById<EditText>(R.id.edit_emp_num)
         val phoneEdit = findViewById<EditText>(R.id.edit_phone_num)
 
+        // 전화번호 입력 폼 양식 설정
+        phoneEdit.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+
         // 회원가입 버튼
         btn_signup.setOnClickListener {
-            //val name = nameEdit.text.toString()
             val tmp = empNumEdit.text.toString()
             val empNum = tmp.toInt()
             val phoneNum = phoneEdit.text.toString()
 
             var userInfo = HashMap<String, Any>()
-            //userInfo.put("name", name)
             userInfo.put("type", accountType)
             userInfo.put("empNum", empNum)
             userInfo.put("phoneNum", phoneNum)

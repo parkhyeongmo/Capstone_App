@@ -54,6 +54,8 @@ data class inspectResult(
 
 // 부품 검사 결과 상세 내역 Response data class
 data class inspection(
+    @SerializedName("testId")
+    val testId: Int,
     @SerializedName("tester")
     val tester: String,
     @SerializedName("partName")
@@ -175,7 +177,7 @@ interface APIInterface {
     // 담당자 번호 호출
     @GET("/engineer")
     fun getExpertNum(
-
+        @Header("authorization") jwtToken: String
     ): Call<expertNum>
 
     // 담당자 번호 등록

@@ -22,6 +22,7 @@ import retrofit2.Response
 class UserResultActivity : AppCompatActivity() {
 
     private var testId : Int = -1
+    private var result : inspectResult? = null
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun inspect(bitmap: Bitmap) {
@@ -38,8 +39,12 @@ class UserResultActivity : AppCompatActivity() {
         RetrofitClass.api.inspect(UserInfo.jwt.toString(), body)!!.enqueue(object : retrofit2.Callback<inspectResult> {
             override fun onResponse(call: Call<inspectResult>, response: Response<inspectResult>) {
                 if(response.body() != null) {
+                    Log.i("반환 성공", response.body().toString())
                     // testId 저장
-//                    testId = response.body()!!.result.tes
+                    testId = response.body()!!.result.testId
+
+                    // 검사 결과 저장
+                    result = response.body()
 
                     // 인코딩된 이미지 디코딩
                     val encodeByte = Base64.decode(response.body()!!.imgStr, Base64.DEFAULT)
@@ -49,13 +54,13 @@ class UserResultActivity : AppCompatActivity() {
                     findViewById<ImageView>(R.id.image_result).setImageBitmap(img)
 
                     if (response.body()!!.result.isdefected == 0) {
-                        findViewById<TextView>(R.id.txt_part_name).text = " "
-                        findViewById<TextView>(R.id.txt_isdefected).text = "검사결과 : 정상"
-                        findViewById<TextView>(R.id.txt_stock).text = "0"
+                        findViewById<TextView>(R.id.txt_part_name).text = response.body()!!.result.part
+                        findViewById<TextView>(R.id.txt_isdefected).text = "" + response.body()!!.result.defect_type
+                        findViewById<TextView>(R.id.txt_stock).text = "" + response.body()!!.result.stock.toString()
                     }
                     else {
                         findViewById<TextView>(R.id.txt_part_name).text = response.body()!!.result.part
-                        findViewById<TextView>(R.id.txt_isdefected).text = "검사결과 : " + response.body()!!.result.defect_type
+                        findViewById<TextView>(R.id.txt_isdefected).text = response.body()!!.result.defect_type
                         findViewById<TextView>(R.id.txt_stock).text = "" + response.body()!!.result.stock.toString()
                     }
                     findViewById<TextView>(R.id.txt_tester).text = "" + response.body()!!.result.tester
@@ -76,7 +81,10 @@ class UserResultActivity : AppCompatActivity() {
                 call: Call<inspectResult>,
                 response: Response<inspectResult>
             ) {
-                if(response.body() != null) {
+                if (response.body() != null) {
+                    // 검사 결과 저장
+                    result = response.body()
+
                     // 인코딩된 이미지 디코딩
                     val encodeByte = Base64.decode(response.body()!!.imgStr, Base64.DEFAULT)
                     val img = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size)
@@ -85,13 +93,13 @@ class UserResultActivity : AppCompatActivity() {
                     findViewById<ImageView>(R.id.image_result).setImageBitmap(img)
 
                     if (response.body()!!.result.isdefected == 0) {
-                        findViewById<TextView>(R.id.txt_part_name).text = " "
-                        findViewById<TextView>(R.id.txt_isdefected).text = "검사결과 : 정상"
-                        findViewById<TextView>(R.id.txt_stock).text = "0"
+                        findViewById<TextView>(R.id.txt_part_name).text = response.body()!!.result.part
+                        findViewById<TextView>(R.id.txt_isdefected).text = "" + response.body()!!.result.defect_type
+                        findViewById<TextView>(R.id.txt_stock).text = "" + response.body()!!.result.stock.toString()
                     }
                     else {
                         findViewById<TextView>(R.id.txt_part_name).text = response.body()!!.result.part
-                        findViewById<TextView>(R.id.txt_isdefected).text = "검사결과 : " + response.body()!!.result.defect_type
+                        findViewById<TextView>(R.id.txt_isdefected).text = response.body()!!.result.defect_type
                         findViewById<TextView>(R.id.txt_stock).text = "" + response.body()!!.result.stock.toString()
                     }
                     findViewById<TextView>(R.id.txt_tester).text = "" + response.body()!!.result.tester
@@ -114,6 +122,18 @@ class UserResultActivity : AppCompatActivity() {
         return fineName + num.toString()
     }
 
+    // 검사 결과 공유
+    private fun shareResult() {
+        if (result != null) {
+            // 결과 공유
+            Log.i("공유 성공", result.toString())
+        }
+        else {
+            Toast.makeText(this@UserResultActivity, "결과 공유 실패", Toast.LENGTH_SHORT).show()
+            Log.i("공유 실패", result.toString())
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -129,25 +149,28 @@ class UserResultActivity : AppCompatActivity() {
 
         // 검사할 이미지 받아오기
         val getImage: ByteArray? = intent.getByteArrayExtra("image")
-        val getId = intent.getIntExtra("testId", -1)
+        testId = intent.getIntExtra("testId", -1)
 
         if (getImage != null) {
             val image = BitmapFactory.decodeByteArray(getImage, 0, getImage!!.size)
             // 부품 검사 API 호출
-//            inspect(image)
+            inspect(image)
             Log.i("이미지 진입", "ddd")
 
             // 이미지용 디버깅
-            findViewById<ImageView>(R.id.image_result).setImageBitmap(image)
+//            findViewById<ImageView>(R.id.image_result).setImageBitmap(image)
         }
 
-        else if (getId != -1) {
+        else if (testId != -1) {
             // 상세 결과 API
-//            getResult(getId)
-            Log.i("목록 진입", getId.toString())
+            getResult(testId)
+            Log.i("목록 진입", testId.toString())
         }
 
-
+        // 공유 버튼
+//        findViewById<Button>(R.id.btn_share).setOnClickListener {
+//            shareResult()
+//        }
 
         // 메모 버튼
         findViewById<Button>(R.id.btn_memo).setOnClickListener {
@@ -162,24 +185,48 @@ class UserResultActivity : AppCompatActivity() {
 
             builder.setView(dialogView)
                 .setPositiveButton("등록") { dialogInterface, i ->
-                    val body = HashMap<String, Any>()
-                    body.put("content", dialogMemo.text.toString())
-                    body.put("test_id", testId)
 
-                    // 메모 등록 API 호출
-                    RetrofitClass.api.postMemo(UserInfo.jwt.toString(), body)!!.enqueue(object : retrofit2.Callback<result> {
-                        override fun onResponse(call: Call<result>, response: Response<result>) {
-                            if (response.isSuccessful) {
-                                Toast.makeText(this@UserResultActivity, "메모 등록 성공", Toast.LENGTH_SHORT).show()
+                    if (result!!.result.memo == null) {
+                        val body = HashMap<String, Any>()
+                        body.put("content", dialogMemo.text.toString())
+                        body.put("test_id", testId)
+
+                        // 메모 등록 API 호출
+                        RetrofitClass.api.postMemo(UserInfo.jwt.toString(), body)!!.enqueue(object : retrofit2.Callback<result> {
+                            override fun onResponse(call: Call<result>, response: Response<result>) {
+                                if (response.isSuccessful) {
+                                    Toast.makeText(this@UserResultActivity, "메모 등록 성공", Toast.LENGTH_SHORT).show()
+                                }
                             }
-                        }
 
-                        override fun onFailure(call: Call<result>, t: Throwable) {
-                            Toast.makeText(this@UserResultActivity, "메모 등록 실패", Toast.LENGTH_SHORT).show()
-                            Log.i("메모 등록 실패", t.message.toString())
-                        }
+                            override fun onFailure(call: Call<result>, t: Throwable) {
+                                Toast.makeText(this@UserResultActivity, "메모 등록 실패", Toast.LENGTH_SHORT).show()
+                                Log.i("메모 등록 실패", t.message.toString())
+                            }
+                        })
+                    }
 
-                    })
+                    else {
+                        val body = HashMap<String, Any>()
+                        body.put("content", dialogMemo.text.toString())
+
+                        // 이미 등록된 메모가 있는 경우 메모 수정 API 호출
+                        RetrofitClass.api.changeMemo(UserInfo.jwt.toString(), testId = testId, body)!!.enqueue(object : retrofit2.Callback<result> {
+                            override fun onResponse(
+                                call: Call<result>,
+                                response: Response<result>
+                            ) {
+                                if (response.isSuccessful) {
+                                    Toast.makeText(this@UserResultActivity, "메모 등록 성공", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+                            override fun onFailure(call: Call<result>, t: Throwable) {
+                                Toast.makeText(this@UserResultActivity, "메모 등록 실패", Toast.LENGTH_SHORT).show()
+                                Log.i("메모 등록 실패", t.message.toString())
+                            }
+                        })
+                    }
 
                 }
                 .setNegativeButton("취소") { dialogInterface, i ->

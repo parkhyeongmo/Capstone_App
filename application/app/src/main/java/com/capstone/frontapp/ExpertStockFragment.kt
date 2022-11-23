@@ -83,8 +83,8 @@ class ExpertStockFragment : Fragment() {
                             }
                         })
 
-                        // 재고 목록 재호출
-                        RetrofitClass.api.getParts(UserInfo.jwt.toString()).enqueue(object : retrofit2.Callback<partsList> {
+                        // 부품 목록 재호출
+                        RetrofitClass.api.getParts(UserInfo.jwt.toString())!!.enqueue(object : retrofit2.Callback<partsList> {
                             override fun onResponse(
                                 call: Call<partsList>,
                                 response: Response<partsList>

@@ -66,6 +66,7 @@ class InspectFragment : Fragment() {
         view.findViewById<Button>(R.id.btn_list).setOnClickListener {
             it.findNavController().navigate(R.id.action_inspectFragment_to_userResultListFragment)
         }
+
         // 통화 연결 화면 이동
         view.findViewById<Button>(R.id.btn_call).setOnClickListener {
             it.findNavController().navigate(R.id.action_inspectFragment_to_userCallFragment)

@@ -31,15 +31,13 @@ class UserCallFragment : Fragment() {
         nameSet.text = UserInfo.name + "님"
 
         // 담당자 번호 호출
-        RetrofitClass.api.getExpertNum().enqueue(object : retrofit2.Callback<expertNum> {
+        RetrofitClass.api.getExpertNum(UserInfo.jwt.toString()).enqueue(object : retrofit2.Callback<expertNum> {
             override fun onResponse(call: Call<expertNum>, response: Response<expertNum>) {
-                if (response.isSuccessful) {
-                    view.findViewById<TextView>(R.id.expert_name).text = response.body()!!.name
-                    view.findViewById<TextView>(R.id.tel_num).text = response.body()!!.hp
-                }
-                else {
-                    Toast.makeText(context as UserActivity, "담당자 번호 불러오기 실패", Toast.LENGTH_SHORT).show()
-                }
+                Log.i("번호 호출", response.body().toString())
+
+                view.findViewById<TextView>(R.id.expert_name).text = response.body()!!.name
+                view.findViewById<TextView>(R.id.tel_num).text = response.body()!!.hp
+
             }
 
             override fun onFailure(call: Call<expertNum>, t: Throwable) {

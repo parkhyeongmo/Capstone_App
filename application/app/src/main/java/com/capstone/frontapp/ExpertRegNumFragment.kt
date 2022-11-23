@@ -17,7 +17,6 @@ class ExpertRegNumFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -34,6 +33,11 @@ class ExpertRegNumFragment : Fragment() {
             startActivity(intent)
         }
 
+
+        // 전화번호 입력 폼 양식 설정
+        val phone_num = view.findViewById<EditText>(R.id.edit_expert_tel)
+        phone_num.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+
         // 담당자 번호 등록 버튼
         view.findViewById<Button>(R.id.btn_telnum).setOnClickListener {
             val name: String? = view.findViewById<EditText>(R.id.edit_expert_name).text.toString()
@@ -49,13 +53,13 @@ class ExpertRegNumFragment : Fragment() {
             body.put("name", name)
             body.put("hp", hp)
 
-            RetrofitClass.api.postExpertNum(UserInfo.jwt.toString(), body)!!.enqueue(object : retrofit2.Callback<expertNum> {
-                override fun onResponse(call: Call<expertNum>, response: Response<expertNum>) {
+            RetrofitClass.api.changeExpertNum(UserInfo.jwt.toString(), body)!!.enqueue(object : retrofit2.Callback<result> {
+                override fun onResponse(call: Call<result>, response: Response<result>) {
                     Toast.makeText(context as ExpertActivity, "등록 완료", Toast.LENGTH_SHORT).show()
-                    Log.i("담당자 번호 등록", response.body()!!.name + " " + response.body()!!.hp)
+                    Log.i("담당자 번호 등록", response.body()!!.rst.toString())
                 }
 
-                override fun onFailure(call: Call<expertNum>, t: Throwable) {
+                override fun onFailure(call: Call<result>, t: Throwable) {
                     Toast.makeText(context as ExpertActivity, "등록 실패", Toast.LENGTH_SHORT).show()
                 }
 
