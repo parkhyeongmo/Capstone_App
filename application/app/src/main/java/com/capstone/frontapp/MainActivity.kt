@@ -37,6 +37,49 @@ object UserInfo {
 }
 
 class MainActivity : AppCompatActivity() {
+
+    private fun logIn(accessToken: String) {
+        // Node.js 서버에 로그인 요청
+        RetrofitClass.api.logIn(accessToken)!!.enqueue(object : retrofit2.Callback<loginResponse>{
+            override fun onResponse(
+                call: Call<loginResponse>,
+                response: Response<loginResponse>
+            ) {
+                if (response.isSuccessful && response.code() == 200){ // 로그인 성공
+
+                    Log.i("로그인", "성공")
+                    UserInfo.id = response.body()?.id
+                    UserInfo.name = response.body()?.name
+                    UserInfo.type = response.body()?.type
+                    UserInfo.jwt = response.body()?.jwt
+                    Log.i("로그인", "${UserInfo.id} + ${UserInfo.name} + ${UserInfo.type} + ${UserInfo.jwt}")
+
+                    if (UserInfo.type == 0) {
+                        val userIntent = Intent(this@MainActivity, UserActivity::class.java)
+                        startActivity(userIntent)
+                        finish()
+                    }
+
+                    else if (UserInfo.type == 1) {
+                        val ExpertIntent = Intent(this@MainActivity, ExpertActivity::class.java)
+                        startActivity(ExpertIntent)
+                        finish()
+                    }
+                }
+                else { // 비회원인 경우 회원가입 액티비티로 진행
+                    val SignUpIntent = Intent(this@MainActivity, SignupActivity::class.java)
+                    Log.i("로그인", "비회원 계정 ${response.body()?.name}")
+                    SignUpIntent.putExtra("accessToken", accessToken)
+                    startActivity(SignUpIntent)
+                    finish()
+                }
+            }
+            override fun onFailure(call: Call<loginResponse>, t: Throwable) {
+                Log.i("로그인", "실패")
+            }
+        })
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -63,43 +106,8 @@ class MainActivity : AppCompatActivity() {
                 // 디버깅용 (회원가입)
 //                startActivity(SignUpIntent)
 
-                // Node.js 서버에 로그인 요청
-                RetrofitClass.api.logIn(token.accessToken)!!.enqueue(object : Callback<loginResponse>{
-                    override fun onResponse(
-                        call: Call<loginResponse>,
-                        response: Response<loginResponse>
-                    ) {
-                        if (response.isSuccessful && response.code() == 200){ // 로그인 성공
-
-                            Log.i("로그인", "성공")
-                            UserInfo.id = response.body()?.id
-                            UserInfo.name = response.body()?.name
-                            UserInfo.type = response.body()?.type
-                            UserInfo.jwt = response.body()?.jwt
-                            Log.i("로그인", "${UserInfo.id} + ${UserInfo.name} + ${UserInfo.type} + ${UserInfo.jwt}")
-
-                            if (UserInfo.type == 0) {
-                                startActivity(userIntent)
-                                finish()
-                            }
-
-                            else if (UserInfo.type == 1) {
-                                startActivity(ExpertIntent)
-                                finish()
-                            }
-                        }
-                        else { // 비회원인 경우 회원가입 액티비티로 진행
-                            Log.i("로그인", "비회원 계정 ${response.body()?.name}")
-                            SignUpIntent.putExtra("accessToken", token.accessToken)
-                            startActivity(SignUpIntent)
-                            finish()
-                        }
-                    }
-                    override fun onFailure(call: Call<loginResponse>, t: Throwable) {
-                        Log.i("로그인", "실패")
-                    }
-                })
-
+                // 로그인 함수 호출
+                logIn(token.accessToken)
             }
         }
 
@@ -120,43 +128,7 @@ class MainActivity : AppCompatActivity() {
                     else if (token != null) {
                         Log.i("TAG", "카카오계정으로 로그인 성공 ${token.accessToken}")
 
-                        // Node.js 서버에 로그인 요청
-                        RetrofitClass.api.logIn(token.accessToken)!!.enqueue(object : Callback<loginResponse>{
-                            override fun onResponse(
-                                call: Call<loginResponse>,
-                                response: Response<loginResponse>
-                            ) {
-                                if (response.isSuccessful && response.code() == 200){ // 로그인 성공
-                                    Log.i("로그인", "성공")
-                                    UserInfo.id = response.body()?.id
-                                    UserInfo.name = response.body()?.name
-                                    UserInfo.type = response.body()?.type
-                                    UserInfo.jwt = response.body()?.jwt
-                                    Log.i("로그인", "${UserInfo.id} + ${UserInfo.name} + ${UserInfo.type} + ${UserInfo.jwt}")
-
-                                    if (UserInfo.type == 0) {
-                                        startActivity(userIntent)
-                                        finish()
-                                    }
-
-                                    else if (UserInfo.type == 1) {
-                                        startActivity(ExpertIntent)
-                                        finish()
-                                    }
-                                }
-                                else { // 비회원인 경우 회원가입 액티비티로 진행
-                                    Log.i("로그인", "비회원 계정 ${response.body()?.name}")
-                                    SignUpIntent.putExtra("accessToken", token.accessToken)
-                                    startActivity(SignUpIntent)
-                                    finish()
-                                }
-                            }
-                            override fun onFailure(call: Call<loginResponse>, t: Throwable) {
-                                Log.i("로그인", "실패")
-
-                            }
-                        })
-
+                        logIn(token.accessToken)
                     }
                 }
             }
