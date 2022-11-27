@@ -128,7 +128,7 @@ class UserActivity : AppCompatActivity() {
 
         // 결과 액티비티로 비트맵 파일 전송
         val stream = ByteArrayOutputStream()
-        bitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        bitmap!!.compress(Bitmap.CompressFormat.JPEG, 80, stream)
         val byteArray = stream.toByteArray()
 
         val intent = Intent(this, UserResultActivity::class.java)

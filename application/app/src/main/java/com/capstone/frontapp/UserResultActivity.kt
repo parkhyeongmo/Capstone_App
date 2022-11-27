@@ -3,6 +3,7 @@ package com.capstone.frontapp
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Build
@@ -38,6 +39,7 @@ class UserResultActivity : AppCompatActivity() {
         // api 호출
         RetrofitClass.api.inspect(UserInfo.jwt.toString(), body)!!.enqueue(object : retrofit2.Callback<inspectResult> {
             override fun onResponse(call: Call<inspectResult>, response: Response<inspectResult>) {
+                Log.i("반환", response.body().toString())
                 if(response.body() != null) {
                     Log.i("반환 성공", response.body().toString())
                     // testId 저장
@@ -54,9 +56,16 @@ class UserResultActivity : AppCompatActivity() {
                     findViewById<ImageView>(R.id.image_result).setImageBitmap(img)
 
                     if (response.body()!!.result.isdefected == 0) {
-                        findViewById<TextView>(R.id.txt_part_name).text = response.body()!!.result.part
+                        if (response.body()!!.result.part == null) {
+                            findViewById<TextView>(R.id.txt_part_name).text = response.body()!!.result.defect_type
+                            findViewById<TextView>(R.id.txt_stock).text = "검출 실패"
+                        }
+                        else {
+                            findViewById<TextView>(R.id.txt_part_name).text = response.body()!!.result.part
+                            findViewById<TextView>(R.id.txt_stock).text = "" + response.body()!!.result.stock.toString()
+                        }
                         findViewById<TextView>(R.id.txt_isdefected).text = "" + response.body()!!.result.defect_type
-                        findViewById<TextView>(R.id.txt_stock).text = "" + response.body()!!.result.stock.toString()
+
                     }
                     else {
                         findViewById<TextView>(R.id.txt_part_name).text = response.body()!!.result.part
@@ -65,7 +74,16 @@ class UserResultActivity : AppCompatActivity() {
                     }
                     findViewById<TextView>(R.id.txt_tester).text = "" + response.body()!!.result.tester
                     findViewById<TextView>(R.id.txt_date).text = "" + response.body()!!.result.date
-                    findViewById<TextView>(R.id.txt_memo).text = "" + response.body()!!.result.memo
+
+                    if (response.body()!!.result.memo == null) {
+                        findViewById<TextView>(R.id.txt_memo).text = "메모 미등록"
+                    }
+                    else {
+                        findViewById<TextView>(R.id.txt_memo).text = "" + response.body()!!.result.memo
+                    }
+                }
+                else {
+                    Toast.makeText(this@UserResultActivity, "부품 검사 실패", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onFailure(call: Call<inspectResult>, t: Throwable) {
@@ -92,20 +110,45 @@ class UserResultActivity : AppCompatActivity() {
                     // 검사 결과 화면에 반영
                     findViewById<ImageView>(R.id.image_result).setImageBitmap(img)
 
+                    // 정상 판정 시 부품 명, 불량 사유, 재고
                     if (response.body()!!.result.isdefected == 0) {
-                        findViewById<TextView>(R.id.txt_part_name).text = response.body()!!.result.part
+                        if (response.body()!!.result.part == null) {
+                            findViewById<TextView>(R.id.txt_part_name).text = response.body()!!.result.defect_type
+                            findViewById<TextView>(R.id.txt_stock).text = "검출 실패"
+                        }
+                        else {
+                            findViewById<TextView>(R.id.txt_part_name).text = response.body()!!.result.part
+                            findViewById<TextView>(R.id.txt_stock).text = "" + response.body()!!.result.stock.toString()
+                        }
                         findViewById<TextView>(R.id.txt_isdefected).text = "" + response.body()!!.result.defect_type
-                        findViewById<TextView>(R.id.txt_stock).text = "" + response.body()!!.result.stock.toString()
                     }
+                    // 불량 판정 시 부품 명, 불량 사유, 재고
                     else {
                         findViewById<TextView>(R.id.txt_part_name).text = response.body()!!.result.part
                         findViewById<TextView>(R.id.txt_isdefected).text = response.body()!!.result.defect_type
                         findViewById<TextView>(R.id.txt_stock).text = "" + response.body()!!.result.stock.toString()
+
+                        if (response.body()!!.result.isfixed == 1) {
+                            findViewById<TextView>(R.id.txt_isdefected).setTextColor(Color.BLUE)
+                        }
                     }
+
+                    // 검사자, 일자
                     findViewById<TextView>(R.id.txt_tester).text = "" + response.body()!!.result.tester
                     findViewById<TextView>(R.id.txt_date).text = "" + response.body()!!.result.date
-                    findViewById<TextView>(R.id.txt_memo).text = "" + response.body()!!.result.memo
+
+                    // 메모
+                    if (response.body()!!.result.memo == null) {
+                        findViewById<TextView>(R.id.txt_memo).text = "메모 미등록"
+                    }
+                    else {
+                        findViewById<TextView>(R.id.txt_memo).text = "" + response.body()!!.result.memo
+                    }
                 }
+                else {
+                    Toast.makeText(this@UserResultActivity, "검사 결과 요청 실패", Toast.LENGTH_SHORT).show()
+                }
+
             }
 
             override fun onFailure(call: Call<inspectResult>, t: Throwable) {
@@ -124,14 +167,15 @@ class UserResultActivity : AppCompatActivity() {
 
     // 검사 결과 공유
     private fun shareResult() {
-        if (result != null) {
-            // 결과 공유
-            Log.i("공유 성공", result.toString())
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "Test ID: ${testId}\n검사일자: ${result!!.result.date}\n부품명: ${result!!.result.part}\n" +
+                    "불량 유형: ${result!!.result.defect_type}")
+            type = "text/plain"
         }
-        else {
-            Toast.makeText(this@UserResultActivity, "결과 공유 실패", Toast.LENGTH_SHORT).show()
-            Log.i("공유 실패", result.toString())
-        }
+
+        val shareIntent = Intent.createChooser(sendIntent, "결과 공유하기")
+        startActivity(shareIntent)
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -156,9 +200,6 @@ class UserResultActivity : AppCompatActivity() {
             // 부품 검사 API 호출
             inspect(image)
             Log.i("이미지 진입", "ddd")
-
-            // 이미지용 디버깅
-//            findViewById<ImageView>(R.id.image_result).setImageBitmap(image)
         }
 
         else if (testId != -1) {
@@ -168,9 +209,9 @@ class UserResultActivity : AppCompatActivity() {
         }
 
         // 공유 버튼
-//        findViewById<Button>(R.id.btn_share).setOnClickListener {
-//            shareResult()
-//        }
+        findViewById<ImageButton>(R.id.btn_share).setOnClickListener {
+            shareResult()
+        }
 
         // 메모 버튼
         findViewById<Button>(R.id.btn_memo).setOnClickListener {
@@ -195,6 +236,7 @@ class UserResultActivity : AppCompatActivity() {
                         RetrofitClass.api.postMemo(UserInfo.jwt.toString(), body)!!.enqueue(object : retrofit2.Callback<result> {
                             override fun onResponse(call: Call<result>, response: Response<result>) {
                                 if (response.isSuccessful) {
+                                    findViewById<TextView>(R.id.edit_memo).text = dialogMemo.text.toString()
                                     Toast.makeText(this@UserResultActivity, "메모 등록 성공", Toast.LENGTH_SHORT).show()
                                 }
                             }
@@ -217,6 +259,7 @@ class UserResultActivity : AppCompatActivity() {
                                 response: Response<result>
                             ) {
                                 if (response.isSuccessful) {
+                                    findViewById<TextView>(R.id.edit_memo).text = dialogMemo.text.toString()
                                     Toast.makeText(this@UserResultActivity, "메모 등록 성공", Toast.LENGTH_SHORT).show()
                                 }
                             }

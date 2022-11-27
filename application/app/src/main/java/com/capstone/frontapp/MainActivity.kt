@@ -31,7 +31,7 @@ object RetrofitClass {
 
 object UserInfo {
     var id : String? = null
-    var name : String? = null
+    var name : String? = "박형모"
     var type : Int? = null
     var jwt : String? = null
 }
@@ -127,7 +127,6 @@ class MainActivity : AppCompatActivity() {
                     }
                     else if (token != null) {
                         Log.i("TAG", "카카오계정으로 로그인 성공 ${token.accessToken}")
-
                         logIn(token.accessToken)
                     }
                 }

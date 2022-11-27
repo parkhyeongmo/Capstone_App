@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -21,7 +22,7 @@
             android:layout_height="wrap_content"
 
             android:layout_marginStart="20dp"
-            android:text="사용자명"
+            android:text="박형모님"
 
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -87,40 +88,55 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:gravity="center"
+        android:background="#F5F5F5"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
             android:id="@+id/btn_expert_list"
             android:layout_width="100dp"
             android:layout_height="80dp"
-            android:layout_weight="1"
+            android:padding="10dp"
 
-            android:background="@color/black"
+            android:drawableTop="@drawable/ic_baseline_list_24"
+            android:background="@drawable/btn_disabled_background"
+            android:text="검사 내역"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:scaleType="fitXY"
-            android:text="List"
-            android:textColor="@color/white" />
+            android:layout_weight="1"/>
 
         <Button
             android:id="@+id/btn_stock"
             android:layout_width="100dp"
             android:layout_height="80dp"
-            android:layout_weight="1"
+            android:padding="10dp"
 
-            android:background="@color/black"
+            android:drawableTop="@drawable/ic_baseline_build_24"
+            android:background="@drawable/btn_active_background"
+
+            android:text="재고 관리"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:scaleType="fitXY"
-            android:text="Stock"
-            android:textColor="@color/white" />
+            android:layout_weight="1"/>
 
         <Button
             android:id="@+id/btn_reg_num"
             android:layout_width="100dp"
             android:layout_height="80dp"
-            android:layout_weight="1"
+            android:padding="10dp"
 
-            android:background="@color/black"
+            android:drawableTop="@drawable/ic_baseline_call_24"
+            android:background="@drawable/btn_disabled_background"
+
+            android:text="번호 등록"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:scaleType="fitXY"
-            android:text="call"
-            android:textColor="@color/white" />
+            android:layout_weight="1"/>
 
     </LinearLayout>
 

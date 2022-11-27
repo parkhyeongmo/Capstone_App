@@ -111,10 +111,9 @@
                 <ImageView
                     android:id="@+id/image_result"
                     android:src="@drawable/ic_defaultimage"
-                    android:scaleType="fitXY"
 
-                    android:layout_marginTop="20dp"
-                    android:layout_width="350dp"
+                    android:layout_margin="20dp"
+                    android:layout_width="match_parent"
                     android:layout_height="350dp" />
 
                 <LinearLayout
@@ -132,7 +131,6 @@
 
                     <TextView
                         android:id="@+id/txt_part_name"
-                        android:text="케이블"
                         android:textSize="30sp"
                         android:textColor="@color/white"
 
@@ -144,7 +142,8 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp">
 
                     <TextView
                         android:text="검사결과 : "
@@ -156,13 +155,11 @@
 
                     <TextView
                         android:id="@+id/txt_isdefected"
-                        android:text="절단"
 
                         android:textSize="30sp"
                         android:textColor="#ff0000"
 
                         android:layout_marginStart="10dp"
-                        android:layout_marginBottom="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
@@ -196,7 +193,6 @@
                     android:id="@+id/txt_tester"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="김OO"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -226,7 +222,6 @@
                     android:id="@+id/txt_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2022/11/12 14:07:14"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -256,7 +251,6 @@
                     android:id="@+id/txt_stock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="15"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -286,7 +280,6 @@
                     android:id="@+id/txt_memo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모메모"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -295,6 +288,7 @@
                 android:id="@+id/btn_memo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/btn_disabled_background"
 
                 android:text="메모"
                 android:textSize="30sp"

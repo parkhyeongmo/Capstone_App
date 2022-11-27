@@ -142,6 +142,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:background="#F5F5F5"
         app:layout_constraintBottom_toBottomOf="parent"
         android:gravity="center">
 
@@ -149,10 +150,14 @@
             android:id="@+id/btn_expert_list"
             android:layout_width="100dp"
             android:layout_height="80dp"
-            android:background="@color/black"
+            android:padding="10dp"
 
-            android:text="List"
-            android:textColor="@color/white"
+            android:drawableTop="@drawable/ic_baseline_list_24"
+            android:background="@drawable/btn_active_background"
+            android:text="검사 내역"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:scaleType="fitXY"
             android:layout_weight="1"/>
 
@@ -160,10 +165,15 @@
             android:id="@+id/btn_stock"
             android:layout_width="100dp"
             android:layout_height="80dp"
-            android:background="@color/black"
+            android:padding="10dp"
 
-            android:text="Stock"
-            android:textColor="@color/white"
+            android:drawableTop="@drawable/ic_baseline_build_24"
+            android:background="@drawable/btn_disabled_background"
+
+            android:text="재고 관리"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:scaleType="fitXY"
             android:layout_weight="1"/>
 
@@ -171,10 +181,15 @@
             android:id="@+id/btn_reg_num"
             android:layout_width="100dp"
             android:layout_height="80dp"
-            android:background="@color/black"
+            android:padding="10dp"
 
-            android:text="call"
-            android:textColor="@color/white"
+            android:drawableTop="@drawable/ic_baseline_call_24"
+            android:background="@drawable/btn_disabled_background"
+
+            android:text="번호 등록"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:scaleType="fitXY"
             android:layout_weight="1"/>
 

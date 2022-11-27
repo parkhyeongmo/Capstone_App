@@ -26,6 +26,44 @@ class ExpertStockFragment : Fragment() {
 
     private lateinit var ExpertActivity : ExpertActivity
 
+    // 부품 목록 호출
+    private fun getStock(listAdapter: PartsRVAdapter) {
+        // 부품 목록 요청 API
+        RetrofitClass.api.getParts(UserInfo.jwt.toString())!!.enqueue(object : retrofit2.Callback<partsList> {
+            override fun onResponse(call: Call<partsList>, response: Response<partsList>) {
+                // 각 부품 별 이름, 재고 목록에 추가
+                listAdapter.setList(response.body()!!.partsList)
+            }
+            override fun onFailure(call: Call<partsList>, t: Throwable) {
+                Toast.makeText(ExpertActivity, "부품 목록 호출 실패", Toast.LENGTH_SHORT).show()
+                Log.i("부품 목록 호출", "실패")
+            }
+        })
+    }
+
+    // 재고 변경
+    private fun manageStock(part_id: Int, body: HashMap<String, Any>) {
+        RetrofitClass.api.changeStock(UserInfo.jwt.toString(), part_id = part_id, params = body).enqueue(object : retrofit2.Callback<result> {
+            override fun onResponse(
+                call: Call<result>,
+                response: Response<result>
+            ) {
+                if (response.isSuccessful) {
+                    Toast.makeText(context as ExpertActivity, "재고 변경 완료", Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    Toast.makeText(context as ExpertActivity, "재고 변경 실패", Toast.LENGTH_SHORT).show()
+                    Log.i("재고 변경 실패", response.code().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<result>, t: Throwable) {
+                Toast.makeText(context as ExpertActivity, "재고 변경 실패", Toast.LENGTH_SHORT).show()
+                Log.i("재고 변경 실패", t.message.toString())
+            }
+        })
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ExpertActivity = context as ExpertActivity
@@ -62,42 +100,10 @@ class ExpertStockFragment : Fragment() {
                         // 재고 변경 호출
                         val body = HashMap<String, Any>()
                         body.put("stock", dialogStock.text.toString().toInt())
-
-                        RetrofitClass.api.changeStock(UserInfo.jwt.toString(), part_id = part_id, params = body).enqueue(object : retrofit2.Callback<result> {
-                            override fun onResponse(
-                                call: Call<result>,
-                                response: Response<result>
-                            ) {
-                                if (response.isSuccessful) {
-                                    Toast.makeText(context as ExpertActivity, "재고 변경 완료", Toast.LENGTH_SHORT).show()
-                                }
-                                else{
-                                    Toast.makeText(context as ExpertActivity, "재고 변경 실패", Toast.LENGTH_SHORT).show()
-                                    Log.i("재고 변경 실패", response.code().toString())
-                                }
-                            }
-
-                            override fun onFailure(call: Call<result>, t: Throwable) {
-                                Toast.makeText(context as ExpertActivity, "재고 변경 실패", Toast.LENGTH_SHORT).show()
-                                Log.i("재고 변경 실패", t.message.toString())
-                            }
-                        })
+                        manageStock(part_id, body)
 
                         // 부품 목록 재호출
-                        RetrofitClass.api.getParts(UserInfo.jwt.toString())!!.enqueue(object : retrofit2.Callback<partsList> {
-                            override fun onResponse(
-                                call: Call<partsList>,
-                                response: Response<partsList>
-                            ) {
-                                listAdapter.setList(response.body()!!.partsList)
-                            }
-
-                            override fun onFailure(call: Call<partsList>, t: Throwable) {
-                                Toast.makeText(ExpertActivity, "부품 목록 호출 실패", Toast.LENGTH_SHORT).show()
-                                Log.i("부품 목록 호출", "실패")
-                            }
-                        })
-
+                        getStock(listAdapter)
                     }
                     .setNegativeButton("취소") {dialogInterface, i ->
 
@@ -106,16 +112,7 @@ class ExpertStockFragment : Fragment() {
         }
 
         // 부품 목록 요청 API
-        RetrofitClass.api.getParts(UserInfo.jwt.toString())!!.enqueue(object : retrofit2.Callback<partsList> {
-            override fun onResponse(call: Call<partsList>, response: Response<partsList>) {
-                // 각 부품 별 이름, 재고 목록에 추가
-                listAdapter.setList(response.body()!!.partsList)
-            }
-            override fun onFailure(call: Call<partsList>, t: Throwable) {
-                Toast.makeText(ExpertActivity, "부품 목록 호출 실패", Toast.LENGTH_SHORT).show()
-                Log.i("부품 목록 호출", "실패")
-            }
-        })
+        getStock(listAdapter)
 
         // 관리자 검사 내역 화면 이동
         view.findViewById<Button>(R.id.btn_expert_list).setOnClickListener {

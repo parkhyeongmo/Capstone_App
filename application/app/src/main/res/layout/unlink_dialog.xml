@@ -4,13 +4,13 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingHorizontal="30dp"
-    android:paddingVertical="20dp"
     android:layout_gravity="center"
-    android:background="@drawable/dialog_radius_background">
+    android:background="@drawable/dialog_radius_background"
+    android:paddingHorizontal="30dp"
+    android:paddingVertical="20dp">
 
     <TextView
-        android:text="조치 처리 하시겠습니까?"
+        android:text="서비스를 탈퇴하시겠습니까?"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/black"
