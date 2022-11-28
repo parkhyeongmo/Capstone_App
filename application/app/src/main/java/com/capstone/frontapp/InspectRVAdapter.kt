@@ -56,7 +56,13 @@ class InspectRVAdapter(type: Int) : RecyclerView.Adapter<InspectRVAdapter.ViewHo
             val symbol = itemView.findViewById<ImageView>(R.id.image_result_symbol)
             
             date.text = item.date
-            part.text = item.part
+
+            if (item.part == null) {
+                part.text = "검출 실패"
+            }
+            else {
+                part.text = item.part
+            }
 
             // 사용자의 경우 결과 내역에 불량 여부를 체크와 X로 표시
             if (type == 0) {

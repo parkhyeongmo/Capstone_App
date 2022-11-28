@@ -41,6 +41,8 @@ class UserResultActivity : AppCompatActivity() {
             override fun onResponse(call: Call<inspectResult>, response: Response<inspectResult>) {
                 Log.i("반환", response.body().toString())
                 if(response.body() != null) {
+
+
                     Log.i("반환 성공", response.body().toString())
                     // testId 저장
                     testId = response.body()!!.result.testId
@@ -81,6 +83,7 @@ class UserResultActivity : AppCompatActivity() {
                     else {
                         findViewById<TextView>(R.id.txt_memo).text = "" + response.body()!!.result.memo
                     }
+
                 }
                 else {
                     Toast.makeText(this@UserResultActivity, "부품 검사 실패", Toast.LENGTH_SHORT).show()
@@ -148,7 +151,6 @@ class UserResultActivity : AppCompatActivity() {
                 else {
                     Toast.makeText(this@UserResultActivity, "검사 결과 요청 실패", Toast.LENGTH_SHORT).show()
                 }
-
             }
 
             override fun onFailure(call: Call<inspectResult>, t: Throwable) {
@@ -195,16 +197,23 @@ class UserResultActivity : AppCompatActivity() {
         val getImage: ByteArray? = intent.getByteArrayExtra("image")
         testId = intent.getIntExtra("testId", -1)
 
+        // 로딩 다이얼로그 생성
+        val dialog = LoadingDialog(this@UserResultActivity)
+
         if (getImage != null) {
             val image = BitmapFactory.decodeByteArray(getImage, 0, getImage!!.size)
             // 부품 검사 API 호출
+            dialog.show()
             inspect(image)
+            dialog.dismiss()
             Log.i("이미지 진입", "ddd")
         }
 
         else if (testId != -1) {
             // 상세 결과 API
+            dialog.show()
             getResult(testId)
+            dialog.dismiss()
             Log.i("목록 진입", testId.toString())
         }
 

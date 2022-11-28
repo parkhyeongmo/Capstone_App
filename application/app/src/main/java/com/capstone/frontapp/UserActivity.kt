@@ -147,7 +147,7 @@ class UserActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if(resultCode != Activity.RESULT_OK){
-            Toast.makeText(this, "잘못된 접근입니다", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "취소", Toast.LENGTH_SHORT).show()
             return
         }
 

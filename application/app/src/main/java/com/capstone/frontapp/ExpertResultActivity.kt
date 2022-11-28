@@ -114,8 +114,12 @@ class ExpertResultActivity : AppCompatActivity() {
         // 사용자명 표기
         findViewById<TextView>(R.id.user_name).text = UserInfo.name + "님"
 
+        val dialog = LoadingDialog(this)
+
         // 부품 검사 결과 API 호출
+        dialog.show()
         getResult(testId)
+        dialog.dismiss()
 
         // 결과 공유 버튼
         findViewById<ImageButton>(R.id.btn_share).setOnClickListener {
