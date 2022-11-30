@@ -23,9 +23,6 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".LoadingDialog"
-            android:exported="false" />
-        <activity
             android:name=".ExpertResultActivity"
             android:exported="false"
             android:screenOrientation="portrait" />

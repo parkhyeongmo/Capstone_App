@@ -42,7 +42,7 @@ class ExpertStockFragment : Fragment() {
     }
 
     // 재고 변경
-    private fun manageStock(part_id: Int, body: HashMap<String, Any>) {
+    private fun manageStock(part_id: Int, body: HashMap<String, Any>, listAdapter: PartsRVAdapter) {
         RetrofitClass.api.changeStock(UserInfo.jwt.toString(), part_id = part_id, params = body).enqueue(object : retrofit2.Callback<result> {
             override fun onResponse(
                 call: Call<result>,
@@ -50,6 +50,7 @@ class ExpertStockFragment : Fragment() {
             ) {
                 if (response.isSuccessful) {
                     Toast.makeText(context as ExpertActivity, "재고 변경 완료", Toast.LENGTH_SHORT).show()
+                    getStock(listAdapter)
                 }
                 else{
                     Toast.makeText(context as ExpertActivity, "재고 변경 실패", Toast.LENGTH_SHORT).show()
@@ -100,10 +101,7 @@ class ExpertStockFragment : Fragment() {
                         // 재고 변경 호출
                         val body = HashMap<String, Any>()
                         body.put("stock", dialogStock.text.toString().toInt())
-                        manageStock(part_id, body)
-
-                        // 부품 목록 재호출
-                        getStock(listAdapter)
+                        manageStock(part_id, body, listAdapter)
                     }
                     .setNegativeButton("취소") {dialogInterface, i ->
 

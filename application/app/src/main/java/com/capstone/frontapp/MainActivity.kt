@@ -84,9 +84,6 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val userIntent = Intent(this, UserActivity::class.java)
-        val ExpertIntent = Intent(this, ExpertActivity::class.java)
-        val SignUpIntent = Intent(this, SignupActivity::class.java)
 
         // 카카오 로그인
         val btn_kakao_login = findViewById<ImageButton>(R.id.btn_kakao_login)
@@ -96,15 +93,6 @@ class MainActivity : AppCompatActivity() {
                 Log.e("TAG", "카카오계정으로 로그인 실패", error)
             } else if (token != null) {
                 Log.i("TAG", "카카오계정으로 로그인 성공 ${token.accessToken}")
-
-                // 디버깅용 (사용자모드)
-//                startActivity(userIntent)
-
-                // 디버깅용 (담당자모드)
-//                startActivity(ExpertIntent)
-
-                // 디버깅용 (회원가입)
-//                startActivity(SignUpIntent)
 
                 // 로그인 함수 호출
                 logIn(token.accessToken)
@@ -126,7 +114,7 @@ class MainActivity : AppCompatActivity() {
                         UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
                     }
                     else if (token != null) {
-                        Log.i("TAG", "카카오계정으로 로그인 성공 ${token.accessToken}")
+                        Log.i("TAG", "카카오톡으로 로그인 성공 ${token.accessToken}")
                         logIn(token.accessToken)
                     }
                 }

@@ -28,7 +28,6 @@ class UserResultListFragment : Fragment() {
 
     private var first: Boolean = true
     private var part: Int = 0 // 부품 종류 (전체 0, 덕트 1, 선체 2, 선박배관 3, 케이블 4, 보온재 5)
-    var cnt: Int = 0
 
     private fun nextPage(): Int {
         page++
@@ -42,17 +41,6 @@ class UserResultListFragment : Fragment() {
 
     // 다음 페이지 항목 불러오기
     private fun nextItems() {
-
-//        val items = ArrayList<inspectListItem>()
-//
-//        for (i: Int in 1..10) {
-//            cnt++
-//            items.add(inspectListItem(cnt, (cnt + 12).toString(), 1, 1, "2222/22/22"))
-//        }
-//
-//        hasNext = true
-//        nextPage()
-//        RVAdapter.setList(items)
 
         // 전체 부품 목록 호출
         if (part == 0) {
@@ -98,17 +86,6 @@ class UserResultListFragment : Fragment() {
 
     // 이전 페이지 항목 불러오기
     private fun beforeItems() {
-
-//        val items = ArrayList<inspectListItem>()
-//
-//        for (i: Int in 1..10) {
-//            cnt++
-//            items.add(inspectListItem(cnt, cnt.toString(), 1, 1, "2222/22/22"))
-//        }
-//
-//        hasNext = true
-//        beforePage()
-//        RVAdapter.setList(items)
 
         // 전체 부품 목록 호출
         if (part == 0) {
