@@ -31,7 +31,7 @@ object RetrofitClass {
 
 object UserInfo {
     var id : String? = null
-    var name : String? = "박형모"
+    var name : String? = null
     var type : Int? = null
     var jwt : String? = null
 }

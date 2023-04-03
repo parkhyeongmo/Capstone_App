@@ -42,7 +42,7 @@ class UserResultActivity : AppCompatActivity() {
                 Log.i("부품 검사", "성공, " + response.body().toString())
                 if(response.body() != null) {
 
-                    Log.i("반환 성공", response.body().toString())
+                    Log.i("검사 결과", response.body().toString())
                     // testId 저장
                     testId = response.body()!!.result.testId
 
@@ -104,6 +104,7 @@ class UserResultActivity : AppCompatActivity() {
                 if (response.body() != null) {
                     // 검사 결과 저장
                     result = response.body()
+                    Log.i("검사 결과", result.toString())
 
                     // 인코딩된 이미지 디코딩
                     val encodeByte = Base64.decode(response.body()!!.imgStr, Base64.DEFAULT)
